@@ -10,7 +10,7 @@ We’ll explore using investment analysis methods, such as post-modern portfolio
 - Use different APIs to collect data about DeFi protocols, such as their security, price, social sentiment, and project fundamentals.
 - Investigate different investment analysis methods for DeFi portfolio management across sectors, such as lending, dexes, derivatives, payments, and other assets like NFTs.
 - Develop a backend DeFi portfolio management service using the best investment method with periodic rebalancing to optimize for yield.
-- Develop a backend to expose the portfolio management service through a RESTful API.
+- Develop a backend API service to expose the portfolio management service through a RESTful API server.
 - Develop a frontend to provide personalized DeFi financial advice based on answers to a number of investment questions through a bot-like interface.
 
 ## Contribute
