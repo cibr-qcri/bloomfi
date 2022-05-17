@@ -29,4 +29,4 @@ We're looking for people with the following skills to contribute to the project:
 
 ## Mentors
 
-Yazan Boshmaf (@boshmaf) and Husam Al-Jawaheri (@thedarkspy).
+Yazan Boshmaf ([@boshmaf](https://github.com/boshmaf)) and Husam Al-Jawaheri ([@thedarkspy](https://github.com/thedarkspy)).
