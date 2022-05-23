@@ -1,0 +1,10 @@
+FROM node:14-alpine as base
+WORKDIR /app
+COPY package.json .
+COPY package-lock.json .
+RUN apk add --no-cache --virtual .gyp python3 make g++ \
+    && apk update \
+    && npm ci && npm install -g pm2 && npm cache clean --force \
+    && apk del .gyp
+COPY . .
+CMD pm2 start --no-daemon processes.json

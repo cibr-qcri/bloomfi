@@ -1,0 +1,85 @@
+#   port mappings
+#
+#   service         local -> host
+#   ------------------------------
+#   mongo           27017 -> 8283
+#   mongo-express   8081  -> 8282
+#   api             5000  -> 8281
+#   web             3000  -> 8280
+
+version: '3.3'
+services:
+  # Database
+  mongo:
+    image: mongo:5.0-focal
+    ports:
+      - '8283:27017'
+    volumes:
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
+    restart: 'no'
+  mongo-express:
+    depends_on:
+      - mongo
+    image: mongo-express
+    ports:
+      - '8282:8081'
+    restart: 'no'
+  
+  # API
+  api:
+    links:
+      - mongo
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./api:/app
+      - api-node-modules:/app/node_modules
+    environment:
+      HOST: '0.0.0.0'
+      PORT: 5000
+      MONGO_URI: 'mongodb://mongo:27017/defi'
+    ports:
+      - '8281:5000'
+    restart: 'no'
+
+  # Web
+  web:
+    depends_on:
+      - api
+    build:
+      context: ./web
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./web:/app
+      - web-node-modules:/app/node_modules
+    environment:
+      NODE_ENV: 'developement'
+    ports:
+      - '8280:3000'
+    restart: 'no'
+    stdin_open: true
+
+  # Services
+  bootstrap:
+    depends_on:
+      - mongo
+    links:
+      - mongo
+    build:
+      context: ./services/bootstrap
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./services/bootstrap:/app
+      - bootstrap-node-modules:/app/node_modules
+    environment:
+      MONGO_URI: 'mongodb://mongo:27017/defi'
+    restart: 'no'
+
+volumes:
+  mongo-data:
+  mongo-config:
+  api-node-modules:
+  web-node-modules:
+  bootstrap-node-modules:
