@@ -1,6 +1,6 @@
 # defi-robo-advisor
 
-Making DeFi easily accessible to everyone! For more info, check out the [wiki](https://github.com/cibr-qcri/defi-robo-advisor/wiki) for an overview and the [project's board](https://github.com/orgs/cibr-qcri/projects/3) for tasks and planning.
+Making DeFi easily accessible to everyone! For more info, check out the project's [wiki](https://github.com/cibr-qcri/defi-robo-advisor/wiki) and [issues](https://github.com/orgs/cibr-qcri/projects/3).
 
 ## Starting
 
