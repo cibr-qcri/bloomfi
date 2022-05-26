@@ -25,7 +25,7 @@ services:
     ports:
       - '8282:8081'
     restart: 'no'
-  
+
   # API
   api:
     links:
@@ -68,11 +68,12 @@ services:
     links:
       - mongo
     build:
-      context: ./services/bootstrap
-      dockerfile: Dockerfile.dev
+      context: ./services
+      dockerfile: ./bootstrap/Dockerfile.dev
     volumes:
-      - ./services/bootstrap:/app
-      - bootstrap-node-modules:/app/node_modules
+      - ./services:/app
+      - bootstrap-node-modules:/app/bootstrap/node_modules
+      - common-node-modules:/app/common/node_modules
     environment:
       MONGO_URI: 'mongodb://mongo:27017/defi'
     restart: 'no'
@@ -83,3 +84,4 @@ volumes:
   api-node-modules:
   web-node-modules:
   bootstrap-node-modules:
+  common-node-modules:
