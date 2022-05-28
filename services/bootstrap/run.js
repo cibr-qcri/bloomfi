@@ -40,29 +40,26 @@ const storeData = async (data) => {
   });
 };
 
-const main = async () => {
-  const API_URL = 'https://api.llama.fi/protocols';
+const wait = async (durationMs) => {
+  const currentTime = new Date();
+  const nextRunTime = new Date(currentTime.getTime() + durationMs);
+  console.log(`Process completed on ${currentTime.toLocaleString()}`);
+  console.log(`Next run will be on ${nextRunTime.toLocaleString()}\n`);
 
+  // Sleep until next run time comes
+  await sleep(durationMs);
+};
+
+const main = async () => {
   try {
     console.log('Connecting to the database...');
     await connectDB();
 
     // Keep running
     while (true) {
-      const data = await getData(API_URL);
-
+      const data = await getData(process.env.API_URL);
       await storeData(data);
-
-      const currentTime = new Date();
-      const nextRunTime = new Date(
-        // Every 7 days
-        currentTime.getTime() + 7 * 24 * 60 * 60 * 1000
-      );
-      console.log(`Process completed on ${currentTime.toLocaleString()}`);
-      console.log(`Next run will be on ${nextRunTime.toLocaleString()}\n`);
-
-      // Sleep until next run time comes
-      await sleep(nextRunTime.getTime() - currentTime);
+      await wait(parseInt(process.env.SLEEP_DURATION_MS));
     }
   } catch (error) {
     console.log(error);

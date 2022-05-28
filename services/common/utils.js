@@ -1,3 +1,3 @@
-module.exports.sleep = (timeMs) => {
-  return new Promise((resolve) => setTimeout(resolve, timeMs));
+module.exports.sleep = (durationMs) => {
+  return new Promise((resolve) => setTimeout(resolve, durationMs));
 };
