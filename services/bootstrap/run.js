@@ -3,9 +3,9 @@ const connectDB = require('../common/db/connect');
 const Protocol = require('../common/db/models/Protocol');
 const { sleep } = require('../common/utils');
 
-const getData = async (URL) => {
+const getData = async (url) => {
   console.log('Fetching protocol data from API...');
-  const response = await axios.get(URL);
+  const response = await axios.get(url);
 
   return response.data;
 };
@@ -41,6 +41,7 @@ const storeData = async (data) => {
 };
 
 const wait = async (durationMs) => {
+  durationMs = parseInt(durationMs);
   const currentTime = new Date();
   const nextRunTime = new Date(currentTime.getTime() + durationMs);
   console.log(`Process completed on ${currentTime.toLocaleString()}`);
@@ -59,11 +60,10 @@ const main = async () => {
     while (true) {
       const data = await getData(process.env.API_URL);
       await storeData(data);
-      await wait(parseInt(process.env.SLEEP_DURATION_MS));
+      await wait(process.env.SLEEP_DURATION_MS);
     }
   } catch (error) {
-    console.log(error);
-    console.log('Halting due to an error...');
+    console.log('Service exiting due to an error', error);
   }
 };
 
