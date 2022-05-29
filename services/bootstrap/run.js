@@ -1,10 +1,10 @@
 const axios = require('axios');
 const connectDB = require('../common/db/connect');
-const Protocol = require('../common/db/models/Protocol');
+const DataProvider = require('../common/db/models/DataProvider');
 const { sleep } = require('../common/utils');
 
 const getData = async (url) => {
-  console.log('Fetching protocol data from API...');
+  console.log('Fetching data providers from API...');
   const response = await axios.get(url);
   return response.data;
 };
@@ -12,20 +12,25 @@ const getData = async (url) => {
 const storeData = async (data) => {
   console.log('Storing data to the database...');
   data.forEach(async (obj) => {
-    const protocol = {
-      name: obj.name,
-      symbol: obj.symbol,
+    const dataProvider = {
+      protocolName: obj.name,
+      protocolSymbol: obj.symbol,
       coinGeckoId: obj.gecko_id,
       coinMarketCapId: obj.cmcId,
     };
 
-    if (protocol.symbol && protocol.symbol !== '-') {
-      if (protocol.coinGeckoId || protocol.coinMarketCapId) {
-        const documentExists = await Protocol.findOne({ name: protocol.name });
+    if (dataProvider.protocolSymbol && dataProvider.protocolSymbol !== '-') {
+      if (dataProvider.coinGeckoId || dataProvider.coinMarketCapId) {
+        const documentExists = await DataProvider.findOne({
+          protocolName: dataProvider.protocolName,
+        });
         if (!documentExists) {
-          await Protocol.create(protocol);
+          await DataProvider.create(dataProvider);
         } else {
-          await Protocol.updateOne({ name: protocol.name }, protocol);
+          await DataProvider.updateOne(
+            { protocolName: dataProvider.protocolName },
+            dataProvider
+          );
         }
       }
     }

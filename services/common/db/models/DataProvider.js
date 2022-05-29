@@ -1,17 +1,23 @@
 const mongoose = require('mongoose');
 
-const ProtocolSchema = new mongoose.Schema(
+const DataProviderSchema = new mongoose.Schema(
   {
-    name: {
+    protocolName: {
       type: String,
       unique: true,
       trim: true,
       required: [true, 'Please provide a protocol name'],
     },
-    symbol: {
+    protocolSymbol: {
       type: String,
       trim: true,
       required: [true, 'Please provide a protocol symbol'],
+    },
+    coinGeckoId: {
+      type: String,
+    },
+    coinMarketCapId: {
+      type: String,
     },
   },
   {
@@ -19,7 +25,4 @@ const ProtocolSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model(
-  'Protocol',
-  ProtocolSchema
-);
+module.exports = mongoose.model('DataProvider', DataProviderSchema);
