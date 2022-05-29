@@ -14,6 +14,10 @@ const TweetSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    publishedAt: {
+      type: Date,
+      required: true,
+    },
   },
   {
     timestamps: true,
