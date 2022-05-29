@@ -6,12 +6,12 @@ Making DeFi easily accessible to everyone! For more info, check out the project'
 
 ```zsh
 # In developement
-docker-compose -f docker-compose.dev.yaml up --build --detach
+TWITTER_BEARER_KEY="REPLACE" docker-compose -f docker-compose.dev.yaml up --build --detach
 
 # In production
 # Clone the repo in /usr/local directory if not found
 cd /usr/local/defi && git pull
-docker-compose -f docker-compose.prod.yaml up --build --detach
+TWITTER_BEARER_KEY="REPLACE" docker-compose -f docker-compose.prod.yaml up --build --detach
 ```
 
 ## Stopping
