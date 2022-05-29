@@ -8,6 +8,10 @@ const ProtocolDataProviderSchema = new mongoose.Schema(
       trim: true,
       required: [true, 'Please provide a protocol name'],
     },
+    symbol: {
+      type: String,
+      required: [true, 'Please provide a protocol symbol'],
+    },
     coinGeckoId: {
       type: String,
     },

@@ -6,7 +6,6 @@ const { sleep } = require('../common/utils');
 const getData = async (url) => {
   console.log('Fetching protocol data from API...');
   const response = await axios.get(url);
-
   return response.data;
 };
 
@@ -15,16 +14,19 @@ const storeData = async (data) => {
   data.forEach(async (obj) => {
     const protocol = {
       name: obj.name,
+      symbol: obj.symbol,
       coinGeckoId: obj.gecko_id,
       coinMarketCapId: obj.cmcId,
     };
 
-    if (protocol.coinGeckoId || protocol.coinMarketCapId) {
-      const documentExists = await Protocol.findOne({ name: protocol.name });
-      if (!documentExists) {
-        await Protocol.create(protocol);
-      } else {
-        await Protocol.updateOne({ name: protocol.name }, protocol);
+    if (protocol.symbol && protocol.symbol !== '-') {
+      if (protocol.coinGeckoId || protocol.coinMarketCapId) {
+        const documentExists = await Protocol.findOne({ name: protocol.name });
+        if (!documentExists) {
+          await Protocol.create(protocol);
+        } else {
+          await Protocol.updateOne({ name: protocol.name }, protocol);
+        }
       }
     }
   });
