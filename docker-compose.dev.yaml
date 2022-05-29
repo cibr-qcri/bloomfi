@@ -77,7 +77,7 @@ services:
     environment:
       MONGO_URI: 'mongodb://mongo:27017/defi'
       API_URL: 'https://api.llama.fi/protocols'
-      SLEEP_DURATION_MS: 604800000
+      DELAY_MS: 604800000
     restart: 'no'
 
 volumes:

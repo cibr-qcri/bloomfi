@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const ProtocolSchema = new mongoose.Schema(
+const ProtocolDataProviderSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -8,51 +8,11 @@ const ProtocolSchema = new mongoose.Schema(
       trim: true,
       required: [true, 'Please provide a protocol name'],
     },
-    symbol: {
-      type: String,
-      required: [true, 'Please provide a protocol symbol'],
-    },
-    contractAddress: {
-      type: String,
-    },
-    websiteUrl: {
-      type: String,
-    },
-    description: {
-      type: String,
-      trim: true,
-    },
-    mainChain: {
-      type: String,
-      trim: true,
-    },
-    geckoId: {
+    coinGeckoId: {
       type: String,
     },
     coinMarketCapId: {
       type: String,
-    },
-    category: {
-      type: String,
-    },
-    chains: {
-      type: [String],
-    },
-    auditLinks: {
-      type: [String],
-    },
-    tvl: {
-      type: Number,
-    },
-    chainTvls: {
-      type: Map,
-      of: String,
-    },
-    marketCap: {
-      type: Number,
-    },
-    fullyDilutedVolume: {
-      type: Number,
     },
   },
   {
@@ -60,14 +20,7 @@ const ProtocolSchema = new mongoose.Schema(
   }
 );
 
-ProtocolSchema.pre('save', function (next) {
-  Object.keys(this._doc).map((key) => {
-    if (this._doc[key] === '-') {
-      this._doc[key] = null;
-    }
-  });
-
-  next();
-});
-
-module.exports = mongoose.model('Protocol', ProtocolSchema);
+module.exports = mongoose.model(
+  'ProtocolDataProvider',
+  ProtocolDataProviderSchema
+);

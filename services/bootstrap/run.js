@@ -11,56 +11,44 @@ const getData = async (url) => {
 };
 
 const storeData = async (data) => {
-  console.log('Writing data to the database...');
+  console.log('Storing data to the database...');
   data.forEach(async (obj) => {
     const protocol = {
       name: obj.name,
-      contractAddress: obj.address,
-      symbol: obj.symbol,
-      websiteUrl: obj.url,
-      description: obj.description,
-      mainChain: obj.chain,
-      geckoId: obj.gecko_id,
+      coinGeckoId: obj.gecko_id,
       coinMarketCapId: obj.cmcId,
-      category: obj.category,
-      chains: obj.chains,
-      tvl: obj.tvl,
-      chainTvls: obj.chainTvls,
-      marketCap: obj.mcap,
-      fullyDilutedVolume: obj.fdv,
     };
 
-    // Check if the document exists in DB
-    const documentExists = await Protocol.findOne({ name: protocol.name });
-
-    if (!documentExists) {
-      // Write to DB
-      await Protocol.create(protocol);
+    if (protocol.coinGeckoId || protocol.coinMarketCapId) {
+      const documentExists = await Protocol.findOne({ name: protocol.name });
+      if (!documentExists) {
+        await Protocol.create(protocol);
+      } else {
+        await Protocol.updateOne({ name: protocol.name }, protocol);
+      }
     }
   });
 };
 
-const wait = async (durationMs) => {
-  durationMs = parseInt(durationMs);
+const wait = async (delayMs) => {
+  delayMs = parseInt(delayMs);
   const currentTime = new Date();
-  const nextRunTime = new Date(currentTime.getTime() + durationMs);
   console.log(`Process completed on ${currentTime.toLocaleString()}`);
+
+  const nextRunTime = new Date(currentTime.getTime() + delayMs);
   console.log(`Next run will be on ${nextRunTime.toLocaleString()}\n`);
 
-  // Sleep until next run time comes
-  await sleep(durationMs);
+  await sleep(delayMs);
 };
 
 const main = async () => {
   try {
-    console.log('Connecting to the database...');
     await connectDB();
 
-    // Keep running
     while (true) {
       const data = await getData(process.env.API_URL);
       await storeData(data);
-      await wait(process.env.SLEEP_DURATION_MS);
+      await wait(process.env.DELAY_MS);
     }
   } catch (error) {
     console.log('Service exiting due to an error', error);
