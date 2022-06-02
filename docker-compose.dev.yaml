@@ -80,10 +80,32 @@ services:
       DELAY_MS: 604800000
     restart: 'no'
 
+  collect-protocols:
+    depends_on:
+      - mongo
+      - bootstrap
+    links:
+      - mongo
+    build:
+      context: ./services
+      dockerfile: ./collect-protocols/Dockerfile.dev
+    volumes:
+      - ./services:/app
+      - collect-protocols-node-modules:/app/collect-protocols/node_modules
+      - common-node-modules:/app/common/node_modules
+    environment:
+      MONGO_URI: 'mongodb://mongo:27017/defi'
+      API_URL: 'https://rapidapi.com/coingecko/api/coingecko'
+      REQUEST_DELAY_MS: 1000
+      SERVICE_DELAY_MS: 86400000
+      NODE_ENV: 'development'
+    restart: 'no'
+
 volumes:
   mongo-data:
   mongo-config:
   api-node-modules:
   web-node-modules:
   bootstrap-node-modules:
+  collect-protocols-node-modules:
   common-node-modules:
