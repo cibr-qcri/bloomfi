@@ -94,9 +94,11 @@ services:
       - collect-tweets-node-modules:/app/collect-tweets/node_modules
     environment:
       MONGO_URI: 'mongodb://mongo:27017/defi'
-      TWITTER_BEARER_KEY: ${TWITTER_BEARER_KEY}
-      TWITTER_MAX_RESULTS: 100
-      DELAY_MS: 5000
+      STARTUP_DELAY_MS: 10000
+      REQUEST_DELAY_MS: 10000
+      INTERVAL_DELAY_MS: 60000
+      BEARER_KEY: ${TWITTER_BEARER_KEY}
+      MAX_RESULTS: 100
     restart: 'no'
 
 volumes:
