@@ -97,7 +97,7 @@ services:
       MONGO_URI: 'mongodb://mongo:27017/defi'
       API_URL: 'https://rapidapi.com/coingecko/api/coingecko'
       REQUEST_DELAY_MS: 1000
-      SERVICE_DELAY_MS: 86400000
+      SERVICE_DELAY_MS: 20000
       NODE_ENV: 'development'
     restart: 'no'
 
