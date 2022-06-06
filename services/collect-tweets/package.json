@@ -1,0 +1,15 @@
+{
+  "name": "collect-tweets",
+  "version": "1.0.0",
+  "private": true,
+  "main": "run.js",
+  "scripts": {
+    "start": "NODE_ENV=production node run",
+    "dev": "node run"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "twitter-api-v2": "^1.12.2"
+  }
+}
