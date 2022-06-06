@@ -72,12 +72,34 @@ services:
       dockerfile: ./bootstrap/Dockerfile.dev
     volumes:
       - ./services:/app
-      - bootstrap-node-modules:/app/bootstrap/node_modules
       - common-node-modules:/app/common/node_modules
+      - bootstrap-node-modules:/app/bootstrap/node_modules
     environment:
       MONGO_URI: 'mongodb://mongo:27017/defi'
       API_URL: 'https://api.llama.fi/protocols'
       DELAY_MS: 604800000
+    restart: 'no'
+
+  collect-tweets:
+    depends_on:
+      - mongo
+      - bootstrap
+    links:
+      - mongo
+    build:
+      context: ./services
+      dockerfile: ./collect-tweets/Dockerfile.dev
+    volumes:
+      - ./services:/app
+      - common-node-modules:/app/common/node_modules
+      - collect-tweets-node-modules:/app/collect-tweets/node_modules
+    environment:
+      MONGO_URI: 'mongodb://mongo:27017/defi'
+      STARTUP_DELAY_MS: 10000
+      REQUEST_DELAY_MS: 10000
+      INTERVAL_DELAY_MS: 60000
+      BEARER_KEY: ${TWITTER_BEARER_KEY}
+      MAX_RESULTS: 100
     restart: 'no'
 
   collect-protocols:
@@ -94,11 +116,12 @@ services:
       - collect-protocols-node-modules:/app/collect-protocols/node_modules
       - common-node-modules:/app/common/node_modules
     environment:
+      NODE_ENV: 'development'
       MONGO_URI: 'mongodb://mongo:27017/defi'
       API_URL: 'https://rapidapi.com/coingecko/api/coingecko'
       REQUEST_DELAY_MS: 1000
-      SERVICE_DELAY_MS: 20000
-      NODE_ENV: 'development'
+      INTERVAL_DELAY_MS: 60000
+      STARTUP_DELAY_MS: 10000
     restart: 'no'
 
 volumes:
@@ -106,6 +129,7 @@ volumes:
   mongo-config:
   api-node-modules:
   web-node-modules:
+  common-node-modules:
   bootstrap-node-modules:
   collect-protocols-node-modules:
-  common-node-modules:
+  collect-tweets-node-modules:

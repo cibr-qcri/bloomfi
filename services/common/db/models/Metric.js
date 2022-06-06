@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
+
 const MetricSchema = new mongoose.Schema(
   {
+    protocol: {
+      type: 'Protocol',
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
     sentimentVotesUpPercentage: {
       type: Number,
     },
@@ -9,15 +15,12 @@ const MetricSchema = new mongoose.Schema(
     },
     marketCapRank: {
       type: Number,
-      //required: [true, 'Please provide a protocol  marketCapRank'],
     },
     coingeckoRank: {
       type: Number,
-      //required: [true, 'Please provide a protocol  coingeckoRank'],
     },
     coingeckoScore: {
       type: Number,
-      //required: [true, 'Please provide a protocol  coingeckoScore'],
     },
     developerScore: {
       type: Number,
@@ -27,7 +30,6 @@ const MetricSchema = new mongoose.Schema(
     },
     liquidityScore: {
       type: Number,
-      trim: true,
     },
     publicInterestScore: {
       type: Number,
@@ -35,17 +37,14 @@ const MetricSchema = new mongoose.Schema(
     communityData: {
       type: Map,
       to: Number,
-      //required: [true, 'Please provide a protocol  communityData'],
     },
     developerData: {
       type: Map,
       to: Number,
-      //required: [true, 'Please provide a protocol  developerData'],
     },
     publicInterestStats: {
       type: Map,
       to: Number,
-      //required: [true, 'Please provide a protocol  publicInterestStats'],
     },
   },
   {

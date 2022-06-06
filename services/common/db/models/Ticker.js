@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const TickerSchema = new mongoose.Schema(
   {
+    protocol: {
+      type: 'Protocol',
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
     base: {
       type: String,
       trim: true,
@@ -41,20 +46,11 @@ const TickerSchema = new mongoose.Schema(
     lastTradedAt: {
       type: String,
     },
-    lastFetchAt: {
-      type: String,
-    },
     isAnomaly: {
       type: Boolean,
     },
     isStale: {
       type: Boolean,
-    },
-    coinId: {
-      type: String,
-    },
-    targetCoinId: {
-      type: String,
     },
   },
   {
