@@ -1,5 +1,6 @@
-
 # JavaScript   
+
+
 # Logs
 logs
 *.log
@@ -131,7 +132,13 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# vscode
+.vscode
+
+
 # Python
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
