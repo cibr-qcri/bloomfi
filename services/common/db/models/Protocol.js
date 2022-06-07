@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 const ProtocolSchema = new mongoose.Schema(
   {
-    id: {
+    coinGeckoId: {
       type: String,
       trim: true,
       unique: true,
-      required: [true, 'Please provide a protocol id'],
+      required: [true, 'Please provide a coingeckgo id'],
     },
     symbol: {
       type: String,

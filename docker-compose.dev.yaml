@@ -131,5 +131,5 @@ volumes:
   web-node-modules:
   common-node-modules:
   bootstrap-node-modules:
-  collect-protocols-node-modules:
   collect-tweets-node-modules:
+  collect-protocols-node-modules:

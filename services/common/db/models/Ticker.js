@@ -10,7 +10,6 @@ const TickerSchema = new mongoose.Schema(
     base: {
       type: String,
       trim: true,
-      unique: true,
     },
     target: {
       type: String,

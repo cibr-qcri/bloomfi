@@ -13,7 +13,7 @@ const connectDB = require('../common/db/connect');
 const { sleep } = require('../common/utils');
 
 const storeMetricsData = async (obj, doc) => {
-  let metricDataProtocol = {
+  let metricData = {
     protocol: doc._id,
     sentimentVotesUpPercentage: obj.data.sentiment_votes_up_percentage,
     sentimentVotesDownPercentage: obj.data.sentiment_votes_up_percentage,
@@ -29,7 +29,7 @@ const storeMetricsData = async (obj, doc) => {
     publicInterestStats: obj.data.public_interest_stats,
   };
 
-  await Metric.create(metricDataProtocol);
+  await Metric.create(metricData);
 };
 
 const storeMarketData = async (obj, doc) => {
@@ -38,7 +38,7 @@ const storeMarketData = async (obj, doc) => {
     currentPrice: obj.data.market_data.current_price.usd,
     ptotalValueLocked: obj.data.market_data.total_value_locked,
     mcapToTvlRatio: obj.data.market_data.mcap_to_tvl_ratio,
-    fdvToTvlRatio: obj.data.market_data.fdv_to_tvl_ratio,
+    fdvToTvlRatio: Number.parseFloat(obj.data.market_data.fdv_to_tvl_ratio),
     ath: obj.data.market_data.ath.usd,
     athChangePercentage: obj.data.market_data.ath_change_percentage.usd,
     athDate: obj.data.market_data.ath_date.usd,
@@ -58,40 +58,27 @@ const storeMarketData = async (obj, doc) => {
 };
 
 const storeTickerData = async (obj, doc) => {
-  let tickers = [];
   const targets = ['USD', 'USDT', 'USDC', 'BUSD'];
-  let tickers_protocol = obj.data.tickers;
-  for (let ticker_protocol of tickers_protocol) {
-    if (targets.indexOf(ticker_protocol.target) != -1) {
-      let ticker = {
+  let protocolTickers = obj.data.tickers;
+  for (let ticker of protocolTickers) {
+    if (targets.indexOf(ticker.target) !== -1) {
+      let tickerData = {
         protocol: doc._id,
-        base: ticker_protocol.base,
-        target: ticker_protocol.target,
-        market: ticker_protocol.market,
-        last: ticker_protocol.last,
-        volume: ticker_protocol.volume,
-        convertedLast: ticker_protocol.converted_last,
-        convertedVolume: ticker_protocol.convert_volume,
-        trustScore: ticker_protocol.trust_score,
-        bidAskSpreadPercentage: ticker_protocol.bid_ask_apread_percentage,
-        lastTradedAt: ticker_protocol.last_traded_at,
-        isAnomaly: ticker_protocol.is_anomaly,
-        isStale: ticker_protocol.is_stale,
+        base: ticker.base,
+        target: ticker.target,
+        market: ticker.market,
+        last: ticker.last,
+        volume: ticker.volume,
+        convertedLast: ticker.converted_last,
+        convertedVolume: ticker.convert_volume,
+        trustScore: ticker.trust_score,
+        bidAskSpreadPercentage: ticker.bid_ask_apread_percentage,
+        lastTradedAt: ticker.last_traded_at,
+        isAnomaly: ticker.is_anomaly,
+        isStale: ticker.is_stale,
       };
 
-      tickers.push(ticker);
-    }
-  }
-
-  for (let ticker of tickers) {
-    const documentExists = await Ticker.findOne({
-      base: ticker.base,
-    });
-
-    if (!documentExists) {
-      await Ticker.create(ticker);
-    } else {
-      await Ticker.updateOne({ base: ticker.base }, ticker);
+      await Ticker.create(tickerData);
     }
   }
 };
@@ -99,7 +86,7 @@ const storeTickerData = async (obj, doc) => {
 const storeProtocolData = async (obj) => {
   console.log('Storing protocol data to the database...');
   let protocol = {
-    id: obj.data.id,
+    coinGeckoId: obj.data.id,
     symbol: obj.data.symbol,
     name: obj.data.name,
     assetPlatformId: obj.data.asset_platform_id,

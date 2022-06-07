@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const MarketSchema = new mongoose.Schema(
   {
     protocol: {
-      type: 'Protocol',
+      ref: 'Protocol',
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
