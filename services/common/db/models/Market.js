@@ -17,7 +17,7 @@ const MarketSchema = new mongoose.Schema(
       type: Number,
     },
     fdvToTvlRatio: {
-      type: String,
+      type: Number,
     },
     ath: {
       type: Number,

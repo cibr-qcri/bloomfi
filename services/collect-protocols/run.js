@@ -105,7 +105,7 @@ const storeProtocolData = async (obj) => {
     assetPlatformId: obj.data.asset_platform_id,
     genesisDate: obj.data.genesis_date,
     platforms: obj.data.platforms,
-    categories: obj.data.categories,
+    categories: obj.data.categories.filter((cat) => cat !== null),
     description: obj.data.description?.en,
     genesisDate: obj.data.genesis_date,
     contractAddress: obj.data.contract_address,
