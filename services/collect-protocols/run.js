@@ -114,7 +114,6 @@ const fetchAndStoreProtocols = async () => {
   const CoinGeckoClient = new CoinGecko();
   const apiConnection = await CoinGeckoClient.ping();
 
-  let protocol = null;
   if (apiConnection.success) {
     let dataProviders = [];
 
