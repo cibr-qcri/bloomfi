@@ -1,4 +1,4 @@
-'''A RESTful API service to analyze sentiment of tweets.'''
+'''A RESTful API service to analyze text sentiment. Optimized for tweets.'''
 
 import numpy as np
 
