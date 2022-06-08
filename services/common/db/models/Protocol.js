@@ -40,9 +40,6 @@ const ProtocolSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    genesisDate: {
-      type: Date,
-    },
   },
   {
     timestamps: true,
