@@ -1,3 +1,5 @@
+'''A RESTful API service to analyze sentiment of tweets.'''
+
 import numpy as np
 
 from fastapi import FastAPI
@@ -14,6 +16,7 @@ app = FastAPI()
 
 
 def preprocess(text):
+    '''Replace tagged users and linked URLs with placeholders.'''
     new_text = []
     for word in text.split(" "):
         word = '@user' if word.startswith('@') and len(word) > 1 else word
@@ -23,6 +26,7 @@ def preprocess(text):
 
 
 def analyze(text):
+    '''Analyze the sentiment of given text.'''
     text = preprocess(text)
     encoded_input = tokenizer(text, return_tensors='pt')
     output = model(**encoded_input)
@@ -40,9 +44,11 @@ def analyze(text):
 
 @app.get('/')
 def get_root():
-    return {'message': 'This is the sentiment analysis service'}
+    '''Get the root of the API.'''
+    return {"message": "Welcome to the sentiment analysis API!"}
 
 
 @app.get('/analyze')
 async def query_sentiment_analysis(text):
+    '''Get the sentiment of passed text.'''
     return analyze(text)
