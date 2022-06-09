@@ -34,14 +34,14 @@ class SentimentAnalyzer:
 
         return " ".join(new_text)
 
-    def compute_scores(self, text):
-        '''Compute the score of each sentiment label of text.
+    def analyze(self, text):
+        '''Analyze sentiment of text.
         
         Args:
             text (str): The text to be analyzed.
 
         Returns:
-            A dictionary of labels to scores. Available labels are:
+            A dictionary of sentiment labels to scores. Available labels are:
             'positive', 'negative', 'neutral'. The scores are between 0 and 1.
         '''
         text = self.__preprocess(text)
