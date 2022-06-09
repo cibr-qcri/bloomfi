@@ -1,0 +1,9 @@
+numpy
+scipy
+setuptools_rust
+torch
+torchvision
+torchaudio
+transformers
+fastapi
+uvicorn
