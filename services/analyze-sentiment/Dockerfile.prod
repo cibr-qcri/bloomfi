@@ -17,4 +17,4 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip3 install --timeout=900 --no-cache-dir -r requirements.txt --quiet
 
-CMD ["uvicorn", "run:app", "--reload", "--host", "0.0.0.0"]
+CMD ["uvicorn", "server:app", "--reload", "--host", "0.0.0.0"]
