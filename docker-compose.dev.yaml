@@ -110,7 +110,7 @@ services:
     environment:
       MONGO_URI: 'mongodb://mongo:27017/defi'
       SENTIMENT_URI: 'http://analyze-sentiment:8284/analyze'
-      STARTUP_DELAY_MS: 10000
+      STARTUP_DELAY_MS: 120000
       REQUEST_DELAY_MS: 10000
       INTERVAL_DELAY_MS: 60000
       BEARER_KEY: ${TWITTER_BEARER_KEY}

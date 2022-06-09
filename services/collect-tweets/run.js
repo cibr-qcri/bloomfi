@@ -1,4 +1,5 @@
 // External
+const axios = require('axios').default;
 const { TwitterApi } = require('twitter-api-v2');
 
 // Models
@@ -45,6 +46,9 @@ const getAndStoreData = async (client) => {
     });
     while (!paginator.done) {
       for (let tweet of paginator.tweets) {
+        const sentiment_response = await axios.get(process.env.SENTIMENT_URI, {
+          params: { text: tweet.text },
+        });
         const doc = {
           dataProvider: dataProvider._id,
           id: tweet.id,
@@ -60,6 +64,7 @@ const getAndStoreData = async (client) => {
             likeCount: tweet.public_metrics.like_count,
             quoteCount: tweet.public_metrics.quote_count,
           },
+          sentiment: sentiment_response.data,
         };
         await Tweet.create(doc);
         numOfTweets++;
@@ -79,7 +84,7 @@ const main = async () => {
     return;
   }
 
-  console.log('Waiting for bootstrap service to finish...');
+  console.log('Waiting for bootstrap and analyze-sentiment services to run...');
   await sleep(process.env.STARTUP_DELAY_MS);
 
   try {
