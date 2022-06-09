@@ -14,6 +14,6 @@ def get_root():
 
 
 @app.get('/analyze')
-async def query_sentiment_analysis(text):
+async def get_sentiment(text):
     '''Get the sentiment of passed text.'''
     return sentiment_analyzer.compute_scores(text)
