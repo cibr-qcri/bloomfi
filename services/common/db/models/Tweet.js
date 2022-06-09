@@ -24,6 +24,26 @@ const publicMetricSchema = new mongoose.Schema(
   }
 );
 
+const sentimentSchema = new mongoose.Schema(
+  {
+    positive: {
+      type: Number,
+      required: true,
+    },
+    negative: {
+      type: Number,
+      required: true,
+    },
+    neutral: {
+      type: Number,
+      required: true,
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
 const TweetSchema = new mongoose.Schema(
   {
     dataProvider: {
@@ -42,10 +62,6 @@ const TweetSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please provide an id'],
     },
-    lang: {
-      type: String,
-      required: [true, 'Please provide a language'],
-    },
     publicMetrics: {
       type: publicMetricSchema,
       required: [true, 'Please provide public metrics'],
@@ -61,6 +77,10 @@ const TweetSchema = new mongoose.Schema(
     text: {
       type: String,
       required: [true, 'Please provide a text'],
+    },
+    sentiment: {
+      type: sentimentSchema,
+      required: [true, 'Please provide a sentiment'],
     },
   },
   {
