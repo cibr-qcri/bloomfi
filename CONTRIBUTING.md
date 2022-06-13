@@ -23,7 +23,7 @@ Pull requests are the best way to propose changes to the codebase. We actively w
 6. Issue that pull request!
 
 ## Software License
-In short, when you submit code changes, your submissions are understood to be under the same [license](https://github.com/cibr-qcri/defi-robo-advisor/blob/main/LICENSE) that covers the project.
+In short, when you submit code changes, your submissions are understood to be under the same [license](https://github.com/cibr-qcri/defi-robo-advisor/blob/main/LICENSE.md) that covers the project.
 Feel free to contact the maintainers if that's a concern.
 
 ## Bugs
@@ -32,4 +32,4 @@ We use GitHub issues to track public bugs. Report a bug by [opening a new issue]
 Don't forget to follow the template by adding all relevant details. People *love* thorough bug reports. We're not even kidding.
 
 ## License
-By contributing, you agree that your contributions will be licensed under the project's [license](https://github.com/cibr-qcri/defi-robo-advisor/blob/main/LICENSE).
+By contributing, you agree that your contributions will be licensed under the project's [license](https://github.com/cibr-qcri/defi-robo-advisor/blob/main/LICENSE.md).
