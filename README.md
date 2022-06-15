@@ -1,6 +1,6 @@
-# robofi
+# bloomfi
 
-RoboFi is the easiest way to invest in DeFi! For more info, check out the project's [wiki](https://github.com/cibr-qcri/defi-robo-advisor/wiki) and [issues](https://github.com/orgs/cibr-qcri/projects/3).
+BloomFi is the easiest way to invest in DeFi! For more info, check out the project's [wiki](https://github.com/cibr-qcri/defi-robo-advisor/wiki) and [issues](https://github.com/orgs/cibr-qcri/projects/3).
 
 ## Starting
 
