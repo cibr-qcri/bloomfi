@@ -48,6 +48,7 @@ const createDocument = async (dataProviderId, tweet) => {
  */
 const getAndStoreData = async (client) => {
   console.log('Getting and storing tweets for each protocol...');
+
   const tweetFields = [
     'author_id',
     'created_at',
@@ -58,6 +59,12 @@ const getAndStoreData = async (client) => {
     'source',
     'text',
   ];
+
+  let requestDelayMs = parseInt(process.env.REQUEST_DELAY_MS);
+  if (process.env.NODE_ENV === 'development') {
+    requestDelayMs *= 10;
+  }
+
   const dataProviders = await DataProvider.find({});
   for (let dataProvider of dataProviders) {
     console.log(`Gettings recent tweets for ${dataProvider.protocolName}`);
@@ -69,7 +76,7 @@ const getAndStoreData = async (client) => {
       .sort({ publishedAt: -1 })
       .limit(1);
 
-    const paginator = await client.v2.search(dataProvider.protocolSymbol, {
+    let paginator = await client.v2.search(dataProvider.protocolSymbol, {
       max_results: process.env.MAX_RESULTS,
       'media.fields': 'url',
       since_id: latestTweet.length > 0 ? latestTweet[0].id : undefined,
@@ -85,13 +92,11 @@ const getAndStoreData = async (client) => {
         await createDocument(dataProvider._id, tweet);
         numOfTweets++;
       }
-      await sleep(process.env.REQUEST_DELAY_MS);
-      await paginator.fetchNext();
+      await sleep(requestDelayMs);
+      paginator = await paginator.next();
     }
 
-    console.log(
-      `Stored ${numOfTweets} tweets for ${dataProvider.protocolName}`
-    );
+    console.log(`Stored ${numOfTweets} tweets for ${dataProvider.protocolName}`);
   }
 };
 

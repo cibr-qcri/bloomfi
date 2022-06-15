@@ -88,4 +88,6 @@ const TweetSchema = new mongoose.Schema(
   }
 );
 
+TweetSchema.index({ dataProvider: 1, id: 1 }, { unique: true });
+
 module.exports = mongoose.model('Tweet', TweetSchema);

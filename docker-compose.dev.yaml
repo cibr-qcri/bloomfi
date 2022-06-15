@@ -57,7 +57,7 @@ services:
       - ./web:/app
       - web-node-modules:/app/node_modules
     environment:
-      NODE_ENV: 'developement'
+      NODE_ENV: 'development'
       WDS_SOCKET_PORT: 0
     ports:
       - '8280:3000'
@@ -109,6 +109,7 @@ services:
       - common-node-modules:/app/common/node_modules
       - collect-tweets-node-modules:/app/collect-tweets/node_modules
     environment:
+      NODE_ENV: 'development'
       MONGO_URI: 'mongodb://mongo:27017/bloomfi'
       SENTIMENT_URI: 'http://analyze-sentiment:8000/analyze'
       STARTUP_DELAY_MS: 120000
