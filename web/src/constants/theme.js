@@ -3,9 +3,9 @@ const THEME = {
     light: {
       mode: 'light',
       primary: {
-        light: '#4791db',
-        main: '#1976d2',
-        dark: '#115293',
+        light: '#eab676',
+        main: '#e28743',
+        dark: '#b97455',
       },
       secondary: {
         light: '#e33371',
@@ -16,9 +16,9 @@ const THEME = {
     dark: {
       mode: 'dark',
       primary: {
-        light: '#a6d4fa',
-        main: '#90caf9',
-        dark: '#648dae',
+        light: '#b97455',
+        main: '#eab676',
+        dark: '#eab676',
       },
       secondary: {
         light: '#f6a5c0',

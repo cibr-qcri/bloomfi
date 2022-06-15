@@ -5,7 +5,7 @@ import THEME from '../constants/theme';
 const themeState = createSlice({
   name: 'theme',
   initialState: {
-    palette: THEME.palettes.light,
+    palette: THEME.palettes.dark,
   },
   reducers: {
     themeModeSet: (state, action) => {
