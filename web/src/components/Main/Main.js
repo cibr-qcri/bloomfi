@@ -5,10 +5,16 @@ import React from 'react';
 
 import { Container } from '@mui/material';
 
+import Logo from '../Logo';
+
 import styles from './Main-styles';
 
 export const Main = () => {
-  const view = <Container css={styles.container}>Hello World!</Container>;
+  const view = (
+    <Container css={styles.container}>
+      <Logo />
+    </Container>
+  );
 
   return view;
 };

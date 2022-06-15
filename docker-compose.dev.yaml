@@ -41,7 +41,7 @@ services:
     environment:
       HOST: '0.0.0.0'
       PORT: 5000
-      MONGO_URI: 'mongodb://mongo:27017/robofi'
+      MONGO_URI: 'mongodb://mongo:27017/bloomfi'
     ports:
       - '8281:5000'
     restart: 'no'
@@ -58,7 +58,7 @@ services:
       - web-node-modules:/app/node_modules
     environment:
       NODE_ENV: 'developement'
-      WDS_SOCKET_PORT: 3000
+      WDS_SOCKET_PORT: 0
     ports:
       - '8280:3000'
     restart: 'no'
@@ -88,7 +88,7 @@ services:
       - common-node-modules:/app/common/node_modules
       - bootstrap-node-modules:/app/bootstrap/node_modules
     environment:
-      MONGO_URI: 'mongodb://mongo:27017/robofi'
+      MONGO_URI: 'mongodb://mongo:27017/bloomfi'
       API_URL: 'https://api.llama.fi/protocols'
       DELAY_MS: 86400000
     restart: 'no'
@@ -109,7 +109,7 @@ services:
       - common-node-modules:/app/common/node_modules
       - collect-tweets-node-modules:/app/collect-tweets/node_modules
     environment:
-      MONGO_URI: 'mongodb://mongo:27017/robofi'
+      MONGO_URI: 'mongodb://mongo:27017/bloomfi'
       SENTIMENT_URI: 'http://analyze-sentiment:8000/analyze'
       STARTUP_DELAY_MS: 120000
       REQUEST_DELAY_MS: 10000
@@ -133,7 +133,7 @@ services:
       - common-node-modules:/app/common/node_modules
     environment:
       NODE_ENV: 'development'
-      MONGO_URI: 'mongodb://mongo:27017/robofi'
+      MONGO_URI: 'mongodb://mongo:27017/bloomfi'
       API_URL: 'https://rapidapi.com/coingecko/api/coingecko'
       REQUEST_DELAY_MS: 1000
       INTERVAL_DELAY_MS: 86400000
