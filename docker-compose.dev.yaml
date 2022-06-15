@@ -58,6 +58,7 @@ services:
       - web-node-modules:/app/node_modules
     environment:
       NODE_ENV: 'developement'
+      WDS_SOCKET_PORT: 3000
     ports:
       - '8280:3000'
     restart: 'no'
