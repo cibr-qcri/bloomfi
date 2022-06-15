@@ -1,5 +1,4 @@
 import { css } from '@emotion/react';
-
 import { useTheme } from '@mui/system';
 
 const useStyles = () => {
@@ -9,10 +8,8 @@ const useStyles = () => {
     container: css`
       flex-direction: row;
       align-items: center;
-      justify-content: center;
-      min-height: 56px;
-      margin-top: ${theme.spacing(1)};
-      margin-bottom: ${theme.spacing(1)};
+      justify-content: space-between;
+      padding: ${theme.spacing(2)}};
     `,
     toolbar: css`
       position: absolute;

@@ -18,12 +18,12 @@ const useStyles = () => {
       }
     `,
     image: css`
-      height: 60px;
+      height: 32px;
     `,
     text: css`
-      line-height: 1px;
-      font-size: 60px;
-      margin-left: ${theme.spacing(2)};
+      color: ${theme.palette.text.primary};
+      font-size: 32px;
+      margin-left: ${theme.spacing(1.5)};
     `,
   };
 };

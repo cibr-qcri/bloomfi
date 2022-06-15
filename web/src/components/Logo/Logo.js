@@ -2,7 +2,6 @@
 /** @jsxImportSource @emotion/react */
 
 import { NavLink } from 'react-router-dom';
-import React from 'react';
 
 import { Box, Link, Typography } from '@mui/material';
 
@@ -14,12 +13,12 @@ const Logo = () => {
   const styles = useStyles();
 
   const view = (
-    <Box css={styles.container}>
-      <Link css={styles.link} component={NavLink} to="/" underline="none">
+    <Link css={styles.link} component={NavLink} to="/" underline="none">
+      <Box css={styles.container}>
         <img src={logo} alt="BloomFi" css={styles.image} />
-      </Link>
-      <Typography css={styles.text}>BloomFi</Typography>
-    </Box>
+        <Typography css={styles.text}>BloomFi</Typography>
+      </Box>
+    </Link>
   );
 
   return view;

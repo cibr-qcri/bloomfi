@@ -2,7 +2,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { Navigate, Route, Routes } from 'react-router-dom';
-import React, { Suspense, useCallback, useEffect } from 'react';
+import { Suspense, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CssBaseline from '@mui/material/CssBaseline';

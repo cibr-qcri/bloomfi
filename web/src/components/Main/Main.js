@@ -1,18 +1,22 @@
 /* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
 /** @jsxImportSource @emotion/react */
 
-import React from 'react';
+import { Button, Container, Typography } from '@mui/material';
 
-import { Container } from '@mui/material';
-
-import Logo from '../Logo';
-
-import styles from './Main-styles';
+import useStyles from './Main-styles';
 
 export const Main = () => {
+  const styles = useStyles();
+
   const view = (
     <Container css={styles.container}>
-      <Logo />
+      <Typography variant="h4" css={styles.title}>
+        The best way to invest in DeFi
+      </Typography>
+      <Typography css={styles.subtitle}>Automated investing. High returns. Easy setup.</Typography>
+      <Button variant="contained" disableElevation disableRipple css={styles.button}>
+        Get Started
+      </Button>
     </Container>
   );
 

@@ -1,42 +1,41 @@
 /* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
 /** @jsxImportSource @emotion/react */
 
-import { useSelector } from 'react-redux';
-import React, { Fragment, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Menu as MenuIcon } from '@mui/icons-material';
-import { AppBar, IconButton, Toolbar } from '@mui/material';
+import { AppBar, IconButton } from '@mui/material';
+import {
+  DarkModeOutlined as DarkModeIcon,
+  LightModeOutlined as LightModeIcon,
+} from '@mui/icons-material';
 
-import Menu from './Menu';
+import Logo from '../Logo';
 
 import useStyles from './Header-styles';
 
+import { setThemeMode } from '../../store/theme';
+
 const Header = () => {
   const styles = useStyles();
+  const dispatch = useDispatch();
+  const darkMode = useSelector((state) => state.theme.palette.mode === 'dark');
 
-  const [open, setOpen] = useState(false);
-  const isAuth = useSelector((state) => state.auth.token !== null);
-
-  const toggleMenuHandler = () => {
-    setOpen(!open);
+  const handleThemeModeChange = () => {
+    dispatch(setThemeMode(darkMode ? 'light' : 'dark'));
   };
 
   const view = (
-    <Fragment>
-      <Menu open={open} onClose={toggleMenuHandler} isAuth={isAuth} />
-      <AppBar
-        css={styles.container}
-        position="relative"
-        enableColorOnDark
-        elevation={0}
-        color="inherit">
-        <Toolbar sx={styles.toolbar}>
-          <IconButton onClick={toggleMenuHandler} edge="start" color="primary" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-    </Fragment>
+    <AppBar
+      css={styles.container}
+      position="relative"
+      enableColorOnDark
+      elevation={0}
+      color="inherit">
+      <Logo />
+      <IconButton disableRipple onClick={handleThemeModeChange}>
+        {darkMode ? <DarkModeIcon /> : <LightModeIcon />}
+      </IconButton>
+    </AppBar>
   );
 
   return view;

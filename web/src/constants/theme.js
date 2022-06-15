@@ -17,7 +17,7 @@ const THEME = {
       mode: 'dark',
       primary: {
         light: '#b97455',
-        main: '#eab676',
+        main: '#e28743',
         dark: '#eab676',
       },
       secondary: {

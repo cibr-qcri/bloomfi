@@ -15,7 +15,7 @@ export const Layout = (props) => {
   const styles = useStyles();
 
   const view = (
-    <Container maxWidth="md" disableGutters css={styles.container}>
+    <Container maxWidth="lg" disableGutters css={styles.container}>
       <Header />
       <div css={styles.subContainer}>{props.children}</div>
       <Footer />
