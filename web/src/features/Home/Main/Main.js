@@ -9,7 +9,7 @@ export const Main = () => {
   const styles = useStyles();
 
   const view = (
-    <Container css={styles.container}>
+    <Container maxWidth="xl" css={styles.container}>
       <Typography variant="h4" css={styles.title}>
         The best way to invest in DeFi
       </Typography>

@@ -13,7 +13,7 @@ export const Home = () => {
   const styles = useStyles();
 
   return (
-    <Container maxWidth="lg" disableGutters css={styles.container}>
+    <Container maxWidth="xl" disableGutters css={styles.container}>
       <Header />
       <div css={styles.subContainer}>
         <Main />

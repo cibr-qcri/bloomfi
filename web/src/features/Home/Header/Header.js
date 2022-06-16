@@ -3,7 +3,7 @@
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AppBar, IconButton } from '@mui/material';
+import { AppBar, Container, IconButton } from '@mui/material';
 import {
   DarkModeOutlined as DarkModeIcon,
   LightModeOutlined as LightModeIcon,
@@ -25,17 +25,19 @@ const Header = () => {
   };
 
   const view = (
-    <AppBar
-      css={styles.container}
-      position="relative"
-      enableColorOnDark
-      elevation={0}
-      color="inherit">
-      <Logo />
-      <IconButton disableRipple onClick={handleThemeModeChange}>
-        {darkMode ? <DarkModeIcon /> : <LightModeIcon />}
-      </IconButton>
-    </AppBar>
+    <Container maxWidth="xl" disableGutters>
+      <AppBar
+        css={styles.container}
+        position="relative"
+        enableColorOnDark
+        elevation={0}
+        color="inherit">
+        <Logo />
+        <IconButton disableRipple onClick={handleThemeModeChange}>
+          {darkMode ? <DarkModeIcon /> : <LightModeIcon />}
+        </IconButton>
+      </AppBar>
+    </Container>
   );
 
   return view;

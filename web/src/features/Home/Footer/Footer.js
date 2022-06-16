@@ -3,13 +3,13 @@
 
 import { NavLink } from 'react-router-dom';
 
-import { Divider, Grid, Link, Typography } from '@mui/material';
+import { Container, Divider, Grid, Link, Typography } from '@mui/material';
 
 import Logo from '../../../components/Logo';
 
 const Footer = () => {
   const view = (
-    <Grid container mb={2}>
+    <Container maxWidth="xl">
       <Grid container justifyContent="space-between" mb={2}>
         <Grid container item direction="column" alignItems="flex-start" xs={12} sm={4} mb={2}>
           <Logo />
@@ -36,7 +36,7 @@ const Footer = () => {
           </Link>
         </Grid>
       </Grid>
-      <Grid container textAlign="left" direction="column">
+      <Grid container textAlign="left" direction="column" mb={2}>
         <Divider flexItem />
         <Typography variant="caption" mt={4} mb={2}>
           The content of this website is for general, informational purposes. Nothing contained on
@@ -57,7 +57,7 @@ const Footer = () => {
           Copyright &copy; 2022 - BloomFi - All Rights Reserved
         </Typography>
       </Grid>
-    </Grid>
+    </Container>
   );
 
   return view;
