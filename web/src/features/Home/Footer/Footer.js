@@ -3,25 +3,36 @@
 
 import { NavLink } from 'react-router-dom';
 
-import { Container, Divider, Grid, Link, Typography } from '@mui/material';
+import { Divider, Grid, Link, Typography } from '@mui/material';
 
-import Logo from '../Logo';
+import Logo from '../../../components/Logo';
 
 const Footer = () => {
   const view = (
-    <Container>
+    <Grid container mb={2}>
       <Grid container justifyContent="space-between" mb={2}>
         <Grid container item direction="column" alignItems="flex-start" xs={12} sm={4} mb={2}>
           <Logo />
           <Typography variant="caption">Qatar Computing Research Institute, HBKU</Typography>
           <Typography variant="caption">Doha, Qatar</Typography>
         </Grid>
-        <Grid container item direction="column" alignItems="flex-start" xs={12} sm={2} mb={2}>
+        <Grid
+          container
+          item
+          direction="column"
+          alignItems="flex-start"
+          xs={12}
+          sm={2}
+          mb={2}
+          pt={0.5}>
           <Link component={NavLink} to="/privacy" underline="none" mb={1}>
             <Typography variant="body2">Privacy Policy</Typography>
           </Link>
-          <Link component={NavLink} to="/terms" underline="none">
+          <Link component={NavLink} to="/terms" underline="none" mb={1}>
             <Typography variant="body2">Terms &amp; Conditions</Typography>
+          </Link>
+          <Link href="https://qcri.org" target="_blank" rel="noopener" underline="none">
+            <Typography variant="body2">About Us</Typography>
           </Link>
         </Grid>
       </Grid>
@@ -42,11 +53,11 @@ const Footer = () => {
           investment product or service to any person in any jurisdiction where such solicitation or
           offer would be unlawful.
         </Typography>
-        <Typography variant="caption" gutterBottom>
+        <Typography variant="caption">
           Copyright &copy; 2022 - BloomFi - All Rights Reserved
         </Typography>
       </Grid>
-    </Container>
+    </Grid>
   );
 
   return view;

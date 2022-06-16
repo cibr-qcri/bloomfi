@@ -13,7 +13,9 @@ export const Main = () => {
       <Typography variant="h4" css={styles.title}>
         The best way to invest in DeFi
       </Typography>
-      <Typography css={styles.subtitle}>Automated investing. High returns. Easy setup.</Typography>
+      <Typography css={styles.subtitle}>
+        Easy, automated, &amp; personalized DeFi investing for everyone
+      </Typography>
       <Button variant="contained" disableElevation disableRipple css={styles.button}>
         Get Started
       </Button>

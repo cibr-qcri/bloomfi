@@ -13,6 +13,7 @@ const useStyles = () => {
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-height: 580px;
     `,
   };
 };

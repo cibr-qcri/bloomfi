@@ -7,7 +7,7 @@ import { StyledEngineProvider } from '@mui/material/styles';
 
 import reportWebVitals from './reportWebVitals';
 
-import App from './components/App';
+import App from './App';
 
 import store from './store';
 
