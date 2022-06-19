@@ -2,19 +2,18 @@
 /** @jsxImportSource @emotion/react */
 
 import { Navigate, Route, Routes } from 'react-router-dom';
-import React, { Suspense, useCallback, useEffect } from 'react';
+import { Suspense, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import Layout from '../Layout';
-import Main from '../Main';
+import Home from './features/Home';
 
-import { retrieveToken } from '../../store/auth';
-import { retrieveThemeMode, setThemeMode } from '../../store/theme';
+import { retrieveToken } from './store/auth';
+import { retrieveThemeMode, setThemeMode } from './store/theme';
 
-import LazyProgress from '../LazyProgress';
+import LazyProgress from './components/LazyProgress';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -46,36 +45,31 @@ const App = () => {
 
   let routes = (
     <Routes>
-      <Route path="/" element={<Main />} />
-      <Route path="/" element={<Navigate replace to="/" />} />
+      <Route path="/" element={<Home />} />
+      <Route path="*" element={<Navigate replace to="/" />} />
     </Routes>
   );
 
   if (isAuth) {
     routes = (
       <Routes>
-        <Route path="/" component={<Main />} />
-        <Route path="/" element={<Navigate replace to="/" />} />
+        <Route path="/" element={<Home />} />
+        <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     );
   }
 
-  let layout = <LazyProgress />;
+  let content = <LazyProgress />;
   if (isAuthInit) {
-    layout = (
-      <Layout>
-        <Suspense fallback={<LazyProgress />}>{routes}</Suspense>
-      </Layout>
-    );
+    content = <Suspense fallback={<LazyProgress />}>{routes}</Suspense>;
   }
 
-  const view = (
+  return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {layout}
+      {content}
     </ThemeProvider>
   );
-  return view;
 };
 
 export default App;
