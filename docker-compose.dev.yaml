@@ -158,25 +158,6 @@ services:
       STARTUP_DELAY_MS: 10000
     restart: 'no'
 
-  # run-securify:
-  #   depends_on:
-  #     - mongo
-  #     - bootstrap
-  #   links:
-  #     - mongo
-  #   build:
-  #     context: ./services
-  #     dockerfile: ./run-securify/Dockerfile
-  #   volumes:
-  #     - ./services:/app
-  #     - run-securify-node-modules:/app/run-securify/node_modules
-  #     - ./services/run-securify/results:/app/run-securify/results
-  #     - common-node-modules:/app/common/node_modules
-  #   environment:
-  #     INFURA_PROJECT_ID: '62d37c37f64a4703a8a7394e616b4166'
-  #   restart: 'no'
-  #   tty: true
-
 volumes:
   mongo-data:
   mongo-config:
@@ -186,4 +167,3 @@ volumes:
   bootstrap-node-modules:
   collect-tweets-node-modules:
   collect-protocols-node-modules:
-  # run-securify-node-modules:

@@ -5,7 +5,7 @@ import authReducer from './auth';
 import themeReducer from './theme';
 import toastReducer from './toast';
 
-axios.defaults.baseURL = 'https://toshi.cibr.qcri.org/api/v1';
+axios.defaults.baseURL = 'https://bloomfi.cibr.qcri.org/api/v1';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 if (process.env.NODE_ENV === 'development') {

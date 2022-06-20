@@ -19,7 +19,7 @@ export const fetchToken = createAsyncThunk(
 
 export const createUser = createAsyncThunk('auth/createUser', async (data, { rejectWithValue }) => {
   try {
-    await axios.post('/auth/register', data);
+    return await axios.post('/auth/register', data);
   } catch (error) {
     return rejectWithValue(error.response.data.error);
   }
@@ -53,7 +53,7 @@ const authSlice = createSlice({
     redirectTo: null,
     isInit: false,
     isRegistered: false,
-    isActivated: true,
+    isActivated: false,
     isBusy: false,
     error: null,
   },

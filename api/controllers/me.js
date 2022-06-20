@@ -1,7 +1,7 @@
 const asyncHandler = require('../middleware/async');
 const User = require('../models/User');
 
-// @desc      Get logged in user
+// @desc      Get a logged in user
 // @route     GET /api/v1/me
 // @access    Private
 const getMe = asyncHandler(async (request, response) => {
@@ -13,7 +13,7 @@ const getMe = asyncHandler(async (request, response) => {
   });
 });
 
-// @desc      Update logged in user
+// @desc      Update a logged in user
 // @route     PUT /api/v1/me
 // @access    Private
 const updateMe = asyncHandler(async (request, response) => {
@@ -28,7 +28,7 @@ const updateMe = asyncHandler(async (request, response) => {
   });
 });
 
-// @desc      Delete logged in user
+// @desc      Delete a logged in user
 // @route     DELETE /api/v1/me
 // @access    Private
 const deleteMe = asyncHandler(async (request, response) => {

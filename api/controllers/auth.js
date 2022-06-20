@@ -5,7 +5,7 @@ const User = require('../models/User');
 const { activationEmailTemplate, sendEmail } = require('../utils/mail');
 const sendTokenResponse = require('../utils/sendTokenResponse');
 
-// @desc      Sign in a user
+// @desc      Logs in a user
 // @route     POST /api/v1/auth/login
 // @access    Public
 const login = asyncHandler(async (request, response, next) => {
@@ -31,7 +31,7 @@ const login = asyncHandler(async (request, response, next) => {
   sendTokenResponse(user, 200, response);
 });
 
-// @desc      Sign out a user and clears the cookie
+// @desc      Logs out a user and clears the cookie
 // @route     GET /api/v1/auth/logout
 // @access    Public
 const logout = asyncHandler(async (request, response) => {
@@ -46,7 +46,7 @@ const logout = asyncHandler(async (request, response) => {
   });
 });
 
-// @desc      Sign up a new user
+// @desc      Registers a new user
 // @route     POST /api/v1/auth/register
 // @access    Public
 const register = asyncHandler(async (request, response, next) => {

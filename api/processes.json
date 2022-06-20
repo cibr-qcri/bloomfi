@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "DeFi-API",
+      "name": "BloomFi-API",
       "script": "server.js",
       "merge_logs": true,
       "max_restarts": 20,
