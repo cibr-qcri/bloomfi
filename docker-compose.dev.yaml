@@ -51,7 +51,7 @@ services:
       JWT_COOKIE_EXPIRE_MS: 259200000
       LOGOUT_COOKIE_EXPIRE_MS: 10000
       RESET_PASSWORD_EXPIRE_MS: 600000
-      ACCOUNT_ACTIVIATION_URL: 'http://localhost:8180/activate'
+      ACCOUNT_ACTIVIATION_URL: 'http://localhost:8280/activate'
       ACCOUNT_ACTIVIATION_EXPIRE_MS: 259200000
       SMTP_HOST: 'smtp.mailtrap.io'
       SMTP_PORT: 2525

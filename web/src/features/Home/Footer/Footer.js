@@ -9,12 +9,16 @@ import Logo from '../../../components/Logo';
 
 const Footer = () => {
   const view = (
-    <Container maxWidth="xl">
+    <Container maxWidth="lg">
       <Grid container justifyContent="space-between" mb={2}>
         <Grid container item direction="column" alignItems="flex-start" xs={12} sm={4} mb={2}>
           <Logo />
-          <Typography variant="caption">Qatar Computing Research Institute, HBKU</Typography>
-          <Typography variant="caption">Doha, Qatar</Typography>
+          <Typography variant="caption" color="text.secondary">
+            Qatar Computing Research Institute, HBKU
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            Doha, Qatar
+          </Typography>
         </Grid>
         <Grid
           container
@@ -38,7 +42,7 @@ const Footer = () => {
       </Grid>
       <Grid container textAlign="left" direction="column" mb={2}>
         <Divider flexItem />
-        <Typography variant="caption" mt={4} mb={2}>
+        <Typography variant="caption" color="text.secondary" mt={4} mb={2}>
           The content of this website is for general, informational purposes. Nothing contained on
           this website should be construed as an offer to sell or the solicitation of any offer to
           buy any security or other financial instrument or product offered or managed by BloomFi or
@@ -53,7 +57,7 @@ const Footer = () => {
           investment product or service to any person in any jurisdiction where such solicitation or
           offer would be unlawful.
         </Typography>
-        <Typography variant="caption">
+        <Typography variant="caption" color="text.secondary">
           Copyright &copy; 2022 - BloomFi - All Rights Reserved
         </Typography>
       </Grid>

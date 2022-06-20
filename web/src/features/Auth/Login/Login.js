@@ -34,8 +34,7 @@ export const SignIn = () => {
     if (isRegistered) {
       dispatch(
         showAlert({
-          message:
-            'Account is successfully created! Please check your email to activate your account.',
+          message: 'Account was successfully created! Check your index for activation link.',
           severity: 'success',
         })
       );

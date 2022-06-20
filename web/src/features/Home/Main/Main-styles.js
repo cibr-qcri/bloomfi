@@ -23,6 +23,8 @@ const useStyles = () => {
     `,
     button: css`
       margin-top: ${theme.spacing(2)};
+      padding: ${theme.spacing(1)};
+      min-width: 120px;
     `,
   };
 };

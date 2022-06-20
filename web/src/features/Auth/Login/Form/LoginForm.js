@@ -61,6 +61,8 @@ const Form = () => {
         <LoadingButton
           loading={isBusy}
           color="primary"
+          disableElevation
+          disableRipple
           variant="contained"
           css={styles.button}
           type="submit">

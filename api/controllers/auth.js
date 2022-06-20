@@ -75,6 +75,7 @@ const register = asyncHandler(async (request, response, next) => {
   try {
     await sendEmail(emailTemplate);
   } catch (error) {
+    console.error(error);
     return next(new ErrorResponse('Could not send activation email', 500));
   }
 

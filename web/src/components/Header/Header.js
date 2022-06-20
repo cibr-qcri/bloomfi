@@ -25,7 +25,7 @@ const Header = () => {
   };
 
   const view = (
-    <Container maxWidth="xl" disableGutters>
+    <Container maxWidth="lg" disableGutters>
       <AppBar
         css={styles.container}
         position="relative"
