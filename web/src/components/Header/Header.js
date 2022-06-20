@@ -9,11 +9,11 @@ import {
   LightModeOutlined as LightModeIcon,
 } from '@mui/icons-material';
 
-import Logo from '../../../components/Logo';
+import Logo from '../Logo';
 
 import useStyles from './Header-styles';
 
-import { setThemeMode } from '../../../store/theme';
+import { setThemeMode } from '../../store/theme';
 
 const Header = () => {
   const styles = useStyles();

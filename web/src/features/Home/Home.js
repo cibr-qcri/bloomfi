@@ -4,7 +4,7 @@
 import { Container } from '@mui/material';
 
 import Footer from './Footer';
-import Header from './Header';
+import Header from '../../components/Header';
 import Main from './Main';
 
 import useStyles from './Home-styles';

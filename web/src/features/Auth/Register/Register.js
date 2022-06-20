@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { Typography } from '@mui/material';
 
 import Form from './Form';
-import Header from '../../Home/Header/Header';
+import Header from '../../../components/Header';
 import Switcher from '../Switcher';
 
 import useStyles from './Register-styles';
