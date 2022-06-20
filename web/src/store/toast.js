@@ -3,16 +3,15 @@ import { createSlice } from '@reduxjs/toolkit';
 const toastSlice = createSlice({
   name: 'toast',
   initialState: {
-    duration: 0,
+    duration: 5000,
     severity: null,
     message: null,
     open: false,
   },
   reducers: {
     alertShown: (state, action) => {
-      state.duration = action.payload.duration;
-      state.message = action.payload.message;
-      state.severity = action.payload.severity;
+      state.message = action.payload?.message;
+      state.severity = action.payload?.severity;
       state.open = true;
     },
     alertHidden: (state) => {

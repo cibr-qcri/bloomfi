@@ -19,7 +19,7 @@ services:
       - mongo-data:/data/db
       - mongo-config:/data/configdb
     restart: 'no'
-  
+
   mongo-express:
     depends_on:
       - mongo
@@ -42,6 +42,23 @@ services:
       HOST: '0.0.0.0'
       PORT: 5000
       MONGO_URI: 'mongodb://mongo:27017/bloomfi'
+      NODE_ENV: 'developement'
+      RATE_LIMIT_WINDOW_MS: 60000
+      RATE_LIMIT_MAX: 100
+      JWT_SECRET: 'UJl5Y8nK7b7TNjz8'
+      JWT_AUTH_EXPIRE_DAYS: '30d'
+      JWT_ACTIVATION_EXPIRE_DAYS: '3d'
+      JWT_COOKIE_EXPIRE_MS: 259200000
+      LOGOUT_COOKIE_EXPIRE_MS: 10000
+      RESET_PASSWORD_EXPIRE_MS: 600000
+      ACCOUNT_ACTIVIATION_URL: 'http://localhost:8180/activate'
+      ACCOUNT_ACTIVIATION_EXPIRE_MS: 259200000
+      SMTP_HOST: 'smtp.mailtrap.io'
+      SMTP_PORT: 2525
+      SMTP_EMAIL: '571098c753e080'
+      SMTP_PASSWORD: '79c540062fd5bb'
+      FROM_EMAIL: 'noreply@mail.cibr.qcri.org'
+      FROM_NAME: 'BloomFi'
     ports:
       - '8281:5000'
     restart: 'no'
@@ -141,6 +158,25 @@ services:
       STARTUP_DELAY_MS: 10000
     restart: 'no'
 
+  # run-securify:
+  #   depends_on:
+  #     - mongo
+  #     - bootstrap
+  #   links:
+  #     - mongo
+  #   build:
+  #     context: ./services
+  #     dockerfile: ./run-securify/Dockerfile
+  #   volumes:
+  #     - ./services:/app
+  #     - run-securify-node-modules:/app/run-securify/node_modules
+  #     - ./services/run-securify/results:/app/run-securify/results
+  #     - common-node-modules:/app/common/node_modules
+  #   environment:
+  #     INFURA_PROJECT_ID: '62d37c37f64a4703a8a7394e616b4166'
+  #   restart: 'no'
+  #   tty: true
+
 volumes:
   mongo-data:
   mongo-config:
@@ -150,3 +186,4 @@ volumes:
   bootstrap-node-modules:
   collect-tweets-node-modules:
   collect-protocols-node-modules:
+  # run-securify-node-modules:

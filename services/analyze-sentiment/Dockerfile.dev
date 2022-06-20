@@ -15,6 +15,6 @@ ENV LC_ALL en_US.UTF-8
 
 WORKDIR /app
 COPY requirements.txt .
-RUN pip3 install --timeout=900 --no-cache-dir -r requirements.txt --quiet
+RUN pip3 install --no-cache-dir -r requirements.txt --quiet
 
 CMD ["uvicorn", "server:app", "--reload", "--host", "0.0.0.0"]
