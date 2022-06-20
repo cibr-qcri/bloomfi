@@ -8,17 +8,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import Activate from './features/Auth/Activate';
 import Home from './features/Home';
-
-import { retrieveToken } from './store/auth';
-import { retrieveThemeMode, setThemeMode } from './store/theme';
-
 import LazyProgress from './components/LazyProgress';
+import Register from './features/Auth/Register/Register';
+import Toast from './components/Toast/Toast';
+
+import { fetchUser, retrieveToken } from './store/auth';
+import { retrieveThemeMode, setThemeMode } from './store/theme';
 
 const App = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.auth.token !== null);
   const isAuthInit = useSelector((state) => state.auth.isInit);
+  const user = useSelector((state) => state.auth.user);
   const palette = useSelector((state) => state.theme.palette);
   const theme = createTheme({ palette });
 
@@ -43,8 +46,16 @@ const App = () => {
     };
   }, [dispatch, handleThemeModeChange]);
 
+  useEffect(() => {
+    if (isAuth && !user) {
+      dispatch(fetchUser());
+    }
+  }, [dispatch, isAuth, user]);
+
   let routes = (
     <Routes>
+      <Route path="/register" element={<Register />} />
+      <Route path="/activate/:token" element={<Activate />} />
       <Route path="/" element={<Home />} />
       <Route path="*" element={<Navigate replace to="/" />} />
     </Routes>
@@ -68,6 +79,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       {content}
+      <Toast />
     </ThemeProvider>
   );
 };
