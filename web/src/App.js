@@ -11,6 +11,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Activate from './features/Auth/Activate';
 import Home from './features/Home';
 import LazyProgress from './components/LazyProgress';
+import Login from './features/Auth/Login';
 import Register from './features/Auth/Register/Register';
 import Toast from './components/Toast/Toast';
 
@@ -54,6 +55,7 @@ const App = () => {
 
   let routes = (
     <Routes>
+      <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/activate/:token" element={<Activate />} />
       <Route path="/" element={<Home />} />
