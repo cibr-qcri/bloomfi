@@ -5,7 +5,7 @@ const User = require('../models/User');
 const { activationEmailTemplate, sendEmail } = require('../utils/mail');
 const sendTokenResponse = require('../utils/sendTokenResponse');
 
-// @desc      Logins a user
+// @desc      Logs in a user
 // @route     POST /api/v1/auth/login
 // @access    Public
 const login = asyncHandler(async (request, response, next) => {
