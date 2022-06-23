@@ -11,6 +11,12 @@ const getData = async (url) => {
 
 const storeData = async (data) => {
   console.log('Storing data to the database...');
+
+  if (!data || data.length === 0) {
+    console.error('No data providers were fetched. Is the API service online?');
+    return;
+  }
+
   data.forEach(async (obj) => {
     const dataProvider = {
       protocolName: obj.name,
@@ -27,10 +33,7 @@ const storeData = async (data) => {
         if (!documentExists) {
           await DataProvider.create(dataProvider);
         } else {
-          await DataProvider.updateOne(
-            { protocolName: dataProvider.protocolName },
-            dataProvider
-          );
+          await DataProvider.updateOne({ protocolName: dataProvider.protocolName }, dataProvider);
         }
       }
     }

@@ -21,8 +21,15 @@ const getSentiment = async (text) => {
   }
 };
 
+/**
+ * Creartes a new MongoDB document for the given data provider and tweet.
+ * @param {string} dataProviderId The data provider ID
+ * @param {import('twitter-api-v2').TweetV2} tweet The tweet object
+ * @returns
+ */
 const createDocument = async (dataProviderId, tweet) => {
   const sentiment = await getSentiment(tweet.text);
+
   const doc = {
     sentiment,
     dataProvider: dataProviderId,
@@ -39,6 +46,7 @@ const createDocument = async (dataProviderId, tweet) => {
       quoteCount: tweet.public_metrics.quote_count,
     },
   };
+
   return await Tweet.create(doc);
 };
 
@@ -49,6 +57,7 @@ const createDocument = async (dataProviderId, tweet) => {
 const getAndStoreData = async (client) => {
   console.log('Getting and storing tweets for each protocol...');
 
+  const tweetExpansions = ['referenced_tweets.id'];
   const tweetFields = [
     'author_id',
     'created_at',
@@ -78,20 +87,36 @@ const getAndStoreData = async (client) => {
 
     let paginator = await client.v2.search(dataProvider.protocolSymbol, {
       max_results: process.env.MAX_RESULTS,
+      expansions: tweetExpansions.join(','),
       'media.fields': 'url',
       since_id: latestTweet.length > 0 ? latestTweet[0].id : undefined,
       'tweet.fields': tweetFields.join(','),
     });
 
     let numOfTweets = 0;
-    while (!paginator.done) {
+    while (numOfTweets <= process.env.TWEETS_PER_PROTOCOL || !paginator.done) {
       for (let tweet of paginator.tweets) {
         if (tweet.lang && tweet.lang !== 'en') {
           continue;
         }
-        await createDocument(dataProvider._id, tweet);
-        numOfTweets++;
+
+        if (tweet.referenced_tweets?.length > 0) {
+          for (let refTweet of tweet.referenced_tweets) {
+            if (refTweet.type === 'retweeted') {
+              tweet.text = paginator.includes.retweet(tweet).text;
+            }
+          }
+        }
+
+        if (
+          tweet.text.includes(`$${dataProvider.protocolSymbol}`) ||
+          tweet.text.includes(`#${dataProvider.protocolSymbol}`)
+        ) {
+          await createDocument(dataProvider._id, tweet);
+          numOfTweets++;
+        }
       }
+
       await sleep(requestDelayMs);
       paginator = await paginator.next();
     }

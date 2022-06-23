@@ -7,3 +7,4 @@ torchaudio
 transformers
 fastapi
 uvicorn
+gunicorn

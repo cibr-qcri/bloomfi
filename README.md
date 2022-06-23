@@ -6,12 +6,12 @@ BloomFi is the easiest way to invest in DeFi! For more info, check out the proje
 
 ```zsh
 # In developement
-TWITTER_BEARER_KEY="REPLACE" docker-compose -f docker-compose.dev.yaml up --build --detach
+AMPLITUDE_DEV_API_KEY="REPLACE" TWITTER_BEARER_KEY="REPLACE" docker-compose -f docker-compose.dev.yaml up --build --detach
 
 # In production
 # Clone the repo in /usr/local directory if not found
 cd /usr/local/defi && git pull
-TWITTER_BEARER_KEY="REPLACE" docker-compose -f docker-compose.prod.yaml up --build --detach
+SMTP_PASSWORD="REPLACE" AMPLITUDE_PROD_API_KEY="REPLACE" TWITTER_BEARER_KEY="REPLACE" docker-compose -f docker-compose.prod.yaml up --build --detach
 ```
 
 ## Stopping

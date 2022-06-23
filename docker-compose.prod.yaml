@@ -1,96 +1,97 @@
 #   port mappings
 #
-#   service             local -> host
-#   ---------------------------------
-#   analyze-sentiment   8000  -> 8384
-#   mongo               27017 -> 8383
-#   mongo-express       8081  -> 8382
-#   api                 5000  -> 8381
-#   web                 3000  -> 8380
+#   service         local -> host
+#   ------------------------------
+#   proxy           80 -> 8380
 
 version: '3.3'
 services:
-  # Database
+  # Proxy
+  proxy:
+    build:
+      context: ./proxy
+    depends_on:
+      - web
+      - api
+    links:
+      - web
+      - api
+    ports:
+      - '8380:80'
+    restart: always
+    stdin_open: true
+    tty: true
+
+  # Mongo
   mongo:
     image: mongo:5.0-focal
-    ports:
-      - '8383:27017'
     volumes:
       - mongo-data:/data/db
       - mongo-config:/data/configdb
-    restart: 'no'
-
-  mongo-express:
-    depends_on:
-      - mongo
-    image: mongo-express
-    ports:
-      - '8382:8081'
-    restart: 'no'
+    restart: always
+    stdin_open: true
+    tty: true
 
   # API
   api:
+    depends_on:
+      - mongo
     links:
       - mongo
     build:
       context: ./api
-      dockerfile: Dockerfile.dev
-    volumes:
-      - ./api:/app
-      - api-node-modules:/app/node_modules
+      dockerfile: Dockerfile.prod
     environment:
+      NODE_ENV: 'production'
       HOST: '0.0.0.0'
       PORT: 5000
-      MONGO_URI: 'mongodb://mongo:27017/bloomfi'
-      NODE_ENV: 'developement'
       RATE_LIMIT_WINDOW_MS: 60000
       RATE_LIMIT_MAX: 100
+      RUN_JOBS_STARTUP: 'true'
+      MONGO_URI: 'mongodb://mongo:27017/bloomfi'
       JWT_SECRET: 'UJl5Y8nK7b7TNjz8'
       JWT_AUTH_EXPIRE_DAYS: '30d'
       JWT_ACTIVATION_EXPIRE_DAYS: '3d'
       JWT_COOKIE_EXPIRE_MS: 259200000
       LOGOUT_COOKIE_EXPIRE_MS: 10000
       RESET_PASSWORD_EXPIRE_MS: 600000
-      ACCOUNT_ACTIVIATION_URL: 'http://localhost:8380/activate'
+      ACCOUNT_ACTIVIATION_URL: 'https://kansa.cibr.qcri.org/activate'
       ACCOUNT_ACTIVIATION_EXPIRE_MS: 259200000
-      SMTP_HOST: 'smtp.mailtrap.io'
-      SMTP_PORT: 2525
-      SMTP_EMAIL: '571098c753e080'
-      SMTP_PASSWORD: '79c540062fd5bb'
+      SMTP_HOST: 'smtp.office365.com'
+      SMTP_PORT: 587
+      SMTP_EMAIL: 'noreply@mail.cibr.qcri.org'
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
       FROM_EMAIL: 'noreply@mail.cibr.qcri.org'
       FROM_NAME: 'BloomFi'
-    ports:
-      - '8381:5000'
-    restart: 'no'
-
+    restart: always
+    stdin_open: true
+    tty: true
+  
   # Web
   web:
     depends_on:
       - api
     build:
       context: ./web
-      dockerfile: Dockerfile.dev
-    volumes:
-      - ./web:/app
-      - web-node-modules:/app/node_modules
+      dockerfile: Dockerfile.prod
+      args:
+        - REACT_APP_AMPLITUDE_API_KEY=${AMPLITUDE_PROD_API_KEY}
     environment:
-      NODE_ENV: 'development'
-      WDS_SOCKET_PORT: 0
-    ports:
-      - '8380:3000'
-    restart: 'no'
+      NODE_ENV: 'production'
+    restart: always
     stdin_open: true
+    tty: true
 
   # Services
   analyze-sentiment:
     build:
       context: ./services/analyze-sentiment
-      dockerfile: ./Dockerfile.dev
-    ports:
-      - '8384:8000'
+      dockerfile: ./Dockerfile.prod
     volumes:
       - ./services/analyze-sentiment:/app
-    restart: 'no'
+    restart: always
+    stdin_open: true
+    tty: true
 
   bootstrap:
     depends_on:
@@ -99,16 +100,17 @@ services:
       - mongo
     build:
       context: ./services
-      dockerfile: ./bootstrap/Dockerfile.dev
+      dockerfile: ./bootstrap/Dockerfile.prod
     volumes:
       - ./services:/app
-      - common-node-modules:/app/common/node_modules
-      - bootstrap-node-modules:/app/bootstrap/node_modules
     environment:
+      NODE_ENV: 'production'
       MONGO_URI: 'mongodb://mongo:27017/bloomfi'
       API_URL: 'https://api.llama.fi/protocols'
       DELAY_MS: 86400000
-    restart: 'no'
+    restart: always
+    stdin_open: true
+    tty: true
 
   collect-tweets:
     depends_on:
@@ -120,22 +122,22 @@ services:
       - analyze-sentiment
     build:
       context: ./services
-      dockerfile: ./collect-tweets/Dockerfile.dev
+      dockerfile: ./collect-tweets/Dockerfile.prod
     volumes:
       - ./services:/app
-      - common-node-modules:/app/common/node_modules
-      - collect-tweets-node-modules:/app/collect-tweets/node_modules
     environment:
-      NODE_ENV: 'development'
+      NODE_ENV: 'production'
       MONGO_URI: 'mongodb://mongo:27017/bloomfi'
       SENTIMENT_URI: 'http://analyze-sentiment:8000/analyze'
       STARTUP_DELAY_MS: 120000
-      REQUEST_DELAY_MS: 10000
+      REQUEST_DELAY_MS: 6000
       INTERVAL_DELAY_MS: 60000
-      TWEETS_PER_PROTOCOL: 150
+      TWEETS_PER_PROTOCOL: 300
       BEARER_KEY: ${TWITTER_BEARER_KEY}
       MAX_RESULTS: 100
-    restart: 'no'
+    restart: always
+    stdin_open: true
+    tty: true
 
   collect-protocols:
     depends_on:
@@ -145,26 +147,20 @@ services:
       - mongo
     build:
       context: ./services
-      dockerfile: ./collect-protocols/Dockerfile.dev
+      dockerfile: ./collect-protocols/Dockerfile.prod
     volumes:
       - ./services:/app
-      - collect-protocols-node-modules:/app/collect-protocols/node_modules
-      - common-node-modules:/app/common/node_modules
     environment:
-      NODE_ENV: 'development'
+      NODE_ENV: 'production'
       MONGO_URI: 'mongodb://mongo:27017/bloomfi'
       API_URL: 'https://rapidapi.com/coingecko/api/coingecko'
       REQUEST_DELAY_MS: 1000
       INTERVAL_DELAY_MS: 86400000
       STARTUP_DELAY_MS: 10000
-    restart: 'no'
+    restart: always
+    stdin_open: true
+    tty: true
 
 volumes:
   mongo-data:
   mongo-config:
-  api-node-modules:
-  web-node-modules:
-  common-node-modules:
-  bootstrap-node-modules:
-  collect-tweets-node-modules:
-  collect-protocols-node-modules:
