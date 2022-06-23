@@ -55,7 +55,7 @@ services:
       JWT_COOKIE_EXPIRE_MS: 259200000
       LOGOUT_COOKIE_EXPIRE_MS: 10000
       RESET_PASSWORD_EXPIRE_MS: 600000
-      ACCOUNT_ACTIVIATION_URL: 'https://kansa.cibr.qcri.org/activate'
+      ACCOUNT_ACTIVIATION_URL: 'https://bloomfi.cibr.qcri.org/activate'
       ACCOUNT_ACTIVIATION_EXPIRE_MS: 259200000
       SMTP_HOST: 'smtp.office365.com'
       SMTP_PORT: 587
