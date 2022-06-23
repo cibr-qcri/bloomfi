@@ -20,13 +20,13 @@ const Switcher = (props) => {
   let link = null;
   if (path) {
     link = (
-      <Link component={NavLink} to={path}>
+      <Link component={NavLink} to={path} underline="none">
         {action}
       </Link>
     );
   } else {
     link = (
-      <Link href="#" onClick={handleActionClicked}>
+      <Link href="#" onClick={handleActionClicked} underline="none">
         {action}
       </Link>
     );
