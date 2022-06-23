@@ -3,12 +3,14 @@ FROM node:16-alpine
 WORKDIR /app
 RUN mkdir common
 COPY common/package.json common
+COPY common/package-lock.json common
 WORKDIR /app/common
 RUN npm install --silent
 
 WORKDIR /app
 RUN mkdir bootstrap
 COPY bootstrap/package.json bootstrap
+COPY bootstrap/package-lock.json bootstrap
 WORKDIR /app/bootstrap
 RUN npm install --silent
 

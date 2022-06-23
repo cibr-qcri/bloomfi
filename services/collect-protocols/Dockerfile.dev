@@ -3,12 +3,14 @@ FROM node:16-alpine
 WORKDIR /app
 RUN mkdir common
 COPY common/package.json common
+COPY common/package-lock.json common
 WORKDIR /app/common
 RUN npm install --silent
 
 WORKDIR /app
 RUN mkdir collect-protocols
 COPY collect-protocols/package.json collect-protocols
+COPY collect-protocols/package-lock.json collect-protocols
 WORKDIR /app/collect-protocols
 RUN npm install --silent
 
