@@ -94,7 +94,7 @@ const getAndStoreData = async (client) => {
     });
 
     let numOfTweets = 0;
-    while (numOfTweets <= parseInt(process.env.TWEETS_PER_PROTOCOL) || !paginator.done) {
+    while (numOfTweets <= parseInt(process.env.TWEETS_PER_PROTOCOL) && !paginator.done) {
       for (let tweet of paginator.tweets) {
         if (tweet.lang && tweet.lang !== 'en') {
           continue;
