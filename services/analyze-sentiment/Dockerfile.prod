@@ -14,9 +14,6 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 WORKDIR /app
-COPY requirements.txt .
-COPY analyzer.py .
-COPY server.py .
+COPY . .
 RUN pip3 install --no-cache-dir -r requirements.txt --quiet
-
 CMD ["gunicorn", "server:app", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:80"]
