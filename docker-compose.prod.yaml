@@ -87,8 +87,6 @@ services:
     build:
       context: ./services/analyze-sentiment
       dockerfile: ./Dockerfile.prod
-    volumes:
-      - ./services/analyze-sentiment:/app
     restart: always
     stdin_open: true
     tty: true
@@ -101,8 +99,6 @@ services:
     build:
       context: ./services
       dockerfile: ./bootstrap/Dockerfile.prod
-    volumes:
-      - ./services:/app
     environment:
       NODE_ENV: 'production'
       MONGO_URI: 'mongodb://mongo:27017/bloomfi'
@@ -123,8 +119,6 @@ services:
     build:
       context: ./services
       dockerfile: ./collect-tweets/Dockerfile.prod
-    volumes:
-      - ./services:/app
     environment:
       NODE_ENV: 'production'
       MONGO_URI: 'mongodb://mongo:27017/bloomfi'
@@ -148,8 +142,6 @@ services:
     build:
       context: ./services
       dockerfile: ./collect-protocols/Dockerfile.prod
-    volumes:
-      - ./services:/app
     environment:
       NODE_ENV: 'production'
       MONGO_URI: 'mongodb://mongo:27017/bloomfi'
