@@ -1,23 +1,14 @@
 FROM node:18-alpine
-
 WORKDIR /app
-RUN mkdir common
-RUN mkdir collect-protocols
-
+COPY . .
 WORKDIR /app/common
-COPY common/package.json .
-COPY common/package-lock.json .
 RUN apk add --no-cache --virtual .gyp python3 make g++ \
     && apk update \
     && npm ci && npm cache clean --force \
     && apk del .gyp
-
 WORKDIR /app/collect-protocols
-COPY collect-protocols/package.json .
-COPY collect-protocols/package-lock.json .
 RUN apk add --no-cache --virtual .gyp python3 make g++ \
     && apk update \
     && npm ci && npm cache clean --force \
     && apk del .gyp
-
 CMD ["npm", "start"]

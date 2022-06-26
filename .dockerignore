@@ -15,6 +15,7 @@ docker-compose*
 
 # Build
 node_modules
+__pycache__
 build
 npm-debug.log
 .env
