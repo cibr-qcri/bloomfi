@@ -16,9 +16,6 @@ const MarketSchema = new mongoose.Schema(
     mcapToTvlRatio: {
       type: Number,
     },
-    fdvToTvlRatio: {
-      type: Number,
-    },
     ath: {
       type: Number,
     },
@@ -38,9 +35,6 @@ const MarketSchema = new mongoose.Schema(
       type: Number,
     },
     marketCap: {
-      type: Number,
-    },
-    fullyDilutedValuation: {
       type: Number,
     },
     totalVolume: {

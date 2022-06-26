@@ -36,9 +36,8 @@ const storeMarketData = async (obj, doc) => {
   let marketData = {
     protocol: doc._id,
     currentPrice: obj.data.market_data.current_price.usd,
-    ptotalValueLocked: obj.data.market_data.total_value_locked,
+    totalValueLocked: obj.data.market_data.total_value_locked.usd,
     mcapToTvlRatio: obj.data.market_data.mcap_to_tvl_ratio,
-    fdvToTvlRatio: Number.parseFloat(obj.data.market_data.fdv_to_tvl_ratio),
     ath: obj.data.market_data.ath.usd,
     athChangePercentage: obj.data.market_data.ath_change_percentage.usd,
     athDate: obj.data.market_data.ath_date.usd,
@@ -46,7 +45,6 @@ const storeMarketData = async (obj, doc) => {
     atlChangePercentage: obj.data.market_data.atl_change_percentage.usd,
     atlDate: obj.data.market_data.atl_date.usd,
     marketCap: obj.data.market_data.market_cap.usd,
-    fullyDilutedValuation: obj.data.market_data.fully_diluted_valuation.usd,
     totalVolume: obj.data.market_data.total_volume.usd,
     totalSupply: obj.data.market_data.total_supply,
     maxSupply: obj.data.market_data.max_supply,
@@ -133,9 +131,7 @@ const fetchAndStoreProtocols = async () => {
       if (provider.coinGeckoId) {
         try {
           console.log(`Fetching protocol data for ${provider.protocolName}`);
-          fetchedProtocol = await CoinGeckoClient.coins.fetch(
-            provider.coinGeckoId
-          );
+          fetchedProtocol = await CoinGeckoClient.coins.fetch(provider.coinGeckoId);
           const storedProtocol = await storeProtocolData(fetchedProtocol);
           await storeMarketData(fetchedProtocol, storedProtocol);
           await storeMetricsData(fetchedProtocol, storedProtocol);

@@ -2,7 +2,7 @@ FROM node:18-alpine
 
 WORKDIR /app
 COPY common common
-COPY collect-protocols common
+COPY collect-protocols collect-protocols
 
 WORKDIR /app/common
 RUN apk add --no-cache --virtual .gyp python3 make g++ \

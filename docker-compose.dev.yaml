@@ -129,11 +129,11 @@ services:
       NODE_ENV: 'development'
       MONGO_URI: 'mongodb://mongo:27017/bloomfi'
       SENTIMENT_URI: 'http://analyze-sentiment:8000/analyze'
+      TWITTER_BEARER_KEY: ${TWITTER_BEARER_KEY}
       STARTUP_DELAY_MS: 120000
       REQUEST_DELAY_MS: 10000
       INTERVAL_DELAY_MS: 60000
       TWEETS_PER_PROTOCOL: 150
-      BEARER_KEY: ${TWITTER_BEARER_KEY}
       MAX_RESULTS: 100
     restart: 'no'
 

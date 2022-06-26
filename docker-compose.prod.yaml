@@ -122,12 +122,12 @@ services:
     environment:
       NODE_ENV: 'production'
       MONGO_URI: 'mongodb://mongo:27017/bloomfi'
-      SENTIMENT_URI: 'http://analyze-sentiment:8000/analyze'
+      SENTIMENT_URI: 'http://analyze-sentiment/analyze'
+      TWITTER_BEARER_KEY: ${TWITTER_BEARER_KEY}
       STARTUP_DELAY_MS: 120000
       REQUEST_DELAY_MS: 6000
       INTERVAL_DELAY_MS: 60000
-      TWEETS_PER_PROTOCOL: 300
-      BEARER_KEY: ${TWITTER_BEARER_KEY}
+      TWEETS_PER_PROTOCOL: 150
       MAX_RESULTS: 100
     restart: always
     stdin_open: true

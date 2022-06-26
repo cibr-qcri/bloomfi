@@ -126,7 +126,7 @@ const getAndStoreData = async (client) => {
 };
 
 const main = async () => {
-  if (!process.env.BEARER_KEY) {
+  if (!process.env.TWITTER_BEARER_KEY) {
     console.log('Twitter bearer key is not provided');
     return;
   }
@@ -136,7 +136,7 @@ const main = async () => {
 
   try {
     await connectDB();
-    const client = new TwitterApi(process.env.BEARER_KEY);
+    const client = new TwitterApi(process.env.TWITTER_BEARER_KEY);
     while (true) {
       await getAndStoreData(client);
       await sleep(process.env.INTERVAL_DELAY_MS);
