@@ -41,7 +41,6 @@ const storeData = async (data) => {
 };
 
 const wait = async (delayMs) => {
-  delayMs = parseInt(delayMs);
   const currentTime = new Date();
   console.log(`Process completed on ${currentTime.toLocaleString()}`);
 
@@ -58,7 +57,7 @@ const main = async () => {
     while (true) {
       const data = await getData(process.env.API_URL);
       await storeData(data);
-      await wait(process.env.DELAY_MS);
+      await wait(parseInt(process.env.DELAY_MS));
     }
   } catch (error) {
     console.log('Service exiting due to an error', error);

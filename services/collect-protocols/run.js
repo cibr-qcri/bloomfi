@@ -136,7 +136,7 @@ const fetchAndStoreProtocols = async () => {
           await storeMarketData(fetchedProtocol, storedProtocol);
           await storeMetricsData(fetchedProtocol, storedProtocol);
           await storeTickerData(fetchedProtocol, storedProtocol);
-          await sleep(process.env.REQUEST_DELAY_MS);
+          await sleep(parseInt(process.env.REQUEST_DELAY_MS));
         } catch (error) {
           console.log(error);
         }
@@ -161,12 +161,12 @@ const wait = async (delayMs) => {
 const main = async () => {
   try {
     console.log('Waiting for bootstrap service to finish...');
-    await sleep(process.env.STARTUP_DELAY_MS);
+    await sleep(parseInt(process.env.STARTUP_DELAY_MS));
     await connectDB();
 
     while (true) {
       await fetchAndStoreProtocols();
-      await wait(process.env.INTERVAL_DELAY_MS);
+      await wait(parseInt(process.env.INTERVAL_DELAY_MS));
     }
   } catch (error) {
     console.log('Service exiting due to an error', error);

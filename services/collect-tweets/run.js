@@ -86,7 +86,7 @@ const getAndStoreData = async (client) => {
       .limit(1);
 
     let paginator = await client.v2.search(dataProvider.protocolSymbol, {
-      max_results: process.env.MAX_RESULTS,
+      max_results: parseInt(process.env.MAX_RESULTS),
       expansions: tweetExpansions.join(','),
       'media.fields': 'url',
       since_id: latestTweet.length > 0 ? latestTweet[0].id : undefined,
@@ -94,7 +94,7 @@ const getAndStoreData = async (client) => {
     });
 
     let numOfTweets = 0;
-    while (numOfTweets <= process.env.TWEETS_PER_PROTOCOL || !paginator.done) {
+    while (numOfTweets <= parseInt(process.env.TWEETS_PER_PROTOCOL) || !paginator.done) {
       for (let tweet of paginator.tweets) {
         if (tweet.lang && tweet.lang !== 'en') {
           continue;
@@ -132,14 +132,14 @@ const main = async () => {
   }
 
   console.log('Waiting for bootstrap and analyze-sentiment services to run...');
-  await sleep(process.env.STARTUP_DELAY_MS);
+  await sleep(parseInt(process.env.STARTUP_DELAY_MS));
 
   try {
     await connectDB();
     const client = new TwitterApi(process.env.TWITTER_BEARER_KEY);
     while (true) {
       await getAndStoreData(client);
-      await sleep(process.env.INTERVAL_DELAY_MS);
+      await sleep(parseInt(process.env.INTERVAL_DELAY_MS));
     }
   } catch (error) {
     console.log('Service exiting due to an error', error);
