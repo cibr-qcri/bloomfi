@@ -1,3 +1,4 @@
+/* eslint-disable sort-imports */
 /* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
 /** @jsxImportSource @emotion/react */
 
@@ -14,6 +15,9 @@ import LazyProgress from './components/LazyProgress';
 import Login from './features/Auth/Login';
 import Register from './features/Auth/Register';
 import Toast from './components/Toast/Toast';
+import { Main as MainDashboard } from './features/Dashboard/Main/Main';
+import Account from './features/Dashboard/Account/Account';
+import Portfolio from './features/Dashboard/Portfolio/Portfolio';
 
 import { fetchUser, retrieveToken } from './store/auth';
 import { retrieveThemeMode, setThemeMode } from './store/theme';
@@ -58,6 +62,9 @@ const App = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/activate/:token" element={<Activate />} />
+      <Route path="/dashboard" element={<MainDashboard />} />
+      <Route path="/account" element={<Account />} />
+      <Route path="/portfolio" element={<Portfolio />} />
       <Route path="/" element={<Home />} />
       <Route path="*" element={<Navigate replace to="/" />} />
     </Routes>
@@ -67,6 +74,9 @@ const App = () => {
     routes = (
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<MainDashboard />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/portofolio" element={<Portfolio />} />
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     );
