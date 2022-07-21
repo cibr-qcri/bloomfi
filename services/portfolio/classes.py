@@ -1,3 +1,5 @@
+## import modules
+
 import typing as typ
 import datetime
 import numpy as np
@@ -8,7 +10,8 @@ import logging
 
 from pypfopt.efficient_frontier import EfficientFrontier
 from pypfopt.cla import CLA
-from pypfopt import objective_functions
+from pypfopt import black_litterman
+from pypfopt.black_litterman import BlackLittermanModel
 from pypfopt import risk_models
 from pypfopt import expected_returns
 from pypfopt import plotting
@@ -24,16 +27,10 @@ ex_pref = {
     'sens': []
 }
 
-## price data
-full_data = pd.read_csv("/home/gloria/projects/cibr-qcri/defi-robo-advisor/services/portfolio/test_data.csv", index_col="day")
-## clean df
-index_len = len(full_data.index)
-new_index = np.arange(0, index_len, 1)
-full_data.index = new_index
-full_data.index.rename('Day', inplace=True)
 
-tr_days = 90
-price_data = full_data.iloc[:tr_days]
+# how many days to train
+tr_days = 100
+
 
 
 ## sector information
@@ -49,11 +46,17 @@ sect_map = {
 
 ## all the classes needed to create, monitor, and update a portfolio
 
-class DefiCoin:
-    def __init__(self, name: str):
-        self.name = name
-        
 
+class DefiCoin:
+    def __init__(self, id, name, market_cap, latest_day):
+        self.id = id
+        self.name = name
+        self.mc = market_cap
+        self.latest_day = latest_day
+
+
+
+        
 class CoinAnalyzer:
     
     def __init__(self):
@@ -67,17 +70,42 @@ class CoinAnalyzer:
         return expected_returns.mean_historical_return(price, compounding=True)
 
 
+    def plot_matrix(self, matrix, title, price_data):
+        plt.matshow(matrix)
+
+        if len(matrix) < 10:
+            plt.xticks(range(price_data.iloc[1:].select_dtypes(['number']).shape[1]), price_data.select_dtypes(['number']).columns, fontsize=14, rotation=45)
+            plt.yticks(range(price_data.iloc[1:].select_dtypes(['number']).shape[1]), price_data.select_dtypes(['number']).columns, fontsize=14)
+        else:
+            plt.tick_params(
+                axis='both',          # changes apply to the x-axis
+                which='both',      # both major and minor ticks are affected
+                bottom=False,      # ticks along the bottom edge are off
+                top=False,         # ticks along the top edge are off
+                labelbottom=False,
+                labelleft=False,
+                labeltop=False,
+                right=False,
+                left=False) # labels along the bottom edge are off
+
+
+        cb = plt.colorbar()
+        if len(matrix) < 10:
+            plt.clim(0, 3)
+        else:
+            pass
+            # plt.clim(-3, 10)
+        cb.ax.tick_params(labelsize=14)
+
+        plt.title(title)
+
+        # plt.show
+
     ## plot correlations of coins
     def corr_plot(self, df):
-        plt.matshow(df.iloc[1:].corr())
+        mat = df.iloc[1:].corr()
 
-        plt.xticks(range(df.select_dtypes(['number']).shape[1]), df.select_dtypes(['number']).columns, fontsize=14, rotation=45)
-        plt.yticks(range(df.select_dtypes(['number']).shape[1]), df.select_dtypes(['number']).columns, fontsize=14)
-        cb = plt.colorbar()
-        cb.ax.tick_params(labelsize=14)
-        plt.title('Correlation Matrix', fontsize=16)
-
-        plt.show()
+        self.plot_matrix(mat)
 
 
     def cov_matrix(self, price: pd.DataFrame, prefs: Preferences, exp: bool):
@@ -93,21 +121,24 @@ class CoinAnalyzer:
         ## each coin should have a risk score from prefs 
         prefs_risk = np.zeros((num_coins, num_coins))
 
-        np.fill_diagonal(prefs_risk, [1.3, 1.2, 1.2, 1.5, 1.3, 1.1])
+        np.fill_diagonal(prefs_risk, np.sqrt([1.9, 1.2, 1.3, 1.5, 1.7, 1.1, 1.2, 1.3]))
         prefs_risk = pd.DataFrame(prefs_risk, columns=r.columns)
 
         # print(prefs_risk)
         # print(prefs_risk.T.to_numpy())
+        
+        comprehensive_risk = (prefs_risk @ r) @ prefs_risk.T
 
-        return (prefs_risk @ r) @ prefs_risk.T.to_numpy()
+        # print(comprehensive_risk)
+
+        return comprehensive_risk
         
 
 
 class CoinHandler:
 
-    def __init__(self, n):
-        self.coins = []
-        self.corrs = np.zeros(n)
+    def __init__(self):
+        self.coins = {}
 
     ## get n coins from database
     def get_coins(self):
@@ -121,11 +152,23 @@ class CoinHandler:
         pass
 
 
+def price_graph(datafrm):
+    datafrm.pct_change().plot(legend=True,
+        title='Return by Day', ylabel='Percent returns', colormap='Set2', logy=False)
+    # plt.tight_layout()
+    # plt.show()
+
+def cumul_returns(datafrm):
+    datafrm.pct_change().add(1).cumprod().sub(1).plot(legend=True,
+        title='Cumulative Returns by Day', ylabel='Percent returns', colormap='Set2')
+    # plt.tight_layout()
+    # plt.show()
+
 ALL_PORTFOLIOS = {}
 
 class Portfolio:
 
-    def __init__(self, user_id: str, name: str, prefs: Preferences):
+    def __init__(self, user_id: str, name: str, prefs: Preferences, prices):
         self.user = user_id
         self.name = name
         self.prefs = prefs
@@ -134,13 +177,14 @@ class Portfolio:
         self.assets = {}
         self.cap = self.prefs['capital']
         self.ca = CoinAnalyzer()
+        self.history = []
 
         if self.user in ALL_PORTFOLIOS:
             ALL_PORTFOLIOS[self.user].append(self)
         else:
             ALL_PORTFOLIOS[self.user] = [self]
 
-        self.create_portfolio()
+        self.create_portfolio(prices)
 
     def __str__(self) -> str:
         return f'User {self.user} has this portfolio with {self.assets}'
@@ -149,6 +193,15 @@ class Portfolio:
         self.prefs.update(new_prefs)
         logging.debug('prefs updated')
         self.create_portfolio()
+
+
+
+    ## fuction that plots ef
+    def plot_ef(self, e: EfficientFrontier):
+        e = copy.deepcopy(e)
+        fig, ax = plt.subplots()
+        plotting.plot_efficient_frontier(e, ef_param="return", ax=ax, show_assets=True)
+
 
 
     ## function that plots effiecient frontier and randomly generated portfolios
@@ -175,18 +228,23 @@ class Portfolio:
         # Output
         ax.set_title("Efficient Frontier with random portfolios")
         ax.legend()
-        plt.tight_layout()
-        plt.show()
+        # plt.tight_layout()
+        # plt.show()
 
+
+    def plot_w(self):
+        fig, ax = plt.subplots()
+        plotting.plot_weights(self.assets, ax)
 
     ## new portfolio. maybe consider sector constraints
-    def create_portfolio(self):
-        mu = self.ca.mean(price_data)
-        S = self.ca.cov_matrix(price_data, self.prefs, True)
+    def create_portfolio(self, prices):
+        mu = self.ca.mean(prices)
+        S = self.ca.cov_matrix(prices, self.prefs, False)
 
-        # self.ca.corr_plot(price_data)
+        self.ca.plot_matrix(S, "Comprehensive Covariant Matrix", prices)
 
-        ef = EfficientFrontier(mu, S, solver='ECOS')
+        ef = EfficientFrontier(mu, S)
+
 
         sect_prefs = {}
         for sect in self.prefs['sens']:
@@ -200,8 +258,8 @@ class Portfolio:
 
         if self.prefs['risk_appetite'] == 'low':
             ef.min_volatility()
-            if ef.portfolio_performance()[0] < -0.05:
-                print("neg returns")
+            if ef.portfolio_performance()[0] < -1 * np.Infinity:
+                # print("neg returns")
                 ef = EfficientFrontier(mu, S)
                 ef.add_sector_constraints(sect_map, {}, sect_prefs)
                 try:
@@ -219,9 +277,14 @@ class Portfolio:
             try:
                 ef.max_sharpe()
             except:
-                ef = EfficientFrontier(mu, S)
-                ef.add_sector_constraints(sect_map, {}, sect_prefs)
-                ef.max_quadratic_utility()
+                try:
+                    ef = EfficientFrontier(mu, S)
+                    ef.add_sector_constraints(sect_map, {}, sect_prefs)
+                    ef.max_quadratic_utility()
+                except:
+                        ef = EfficientFrontier(mu, S)
+                        ef.add_sector_constraints(sect_map, {}, sect_prefs)
+                        ef.efficient_risk(.5)
         else:
             ef.efficient_risk(1.5)
 
@@ -229,25 +292,21 @@ class Portfolio:
         self.assets = ef.clean_weights()
 
         self.last_rebal = datetime.date.today()
+        # self.plot_w()
 
         # print(f'portfolio rebalanced\n{self.assets}')
-        self.ef.portfolio_performance(verbose=True)
+        # self.ef.portfolio_performance(verbose=True)
 
-    def test_portfolio(self, days):
+    def test_portfolio(self, full_data, last_rebal, days, verbose=False):
         final_val = 0
 
         for coin, weight in self.assets.items():
-            final_val += np.round(weight * self.cap / full_data[coin].iloc[tr_days], 2) * full_data[coin].iloc[days + tr_days] 
-        print(f'The return of this portfolio after {days} days is ${final_val - self.cap}, which is {np.round(final_val - self.cap, 2) / self.cap * 100}%')
+            final_val += np.round(weight * self.cap / full_data[coin].iloc[last_rebal], 5) * full_data[coin].iloc[days + tr_days - 1] 
+        if verbose:
+            print(f'The return of this portfolio after {days} days is ${final_val - self.cap}, which is {np.round(final_val - self.cap, 2) / self.cap * 100}% \n\n')
+        return final_val
 
-p = Portfolio('ABCD', 'one', ex_pref)
-print(p.assets)
-p.test_portfolio(5)
+    def set_weights(self, weights: list, full_data) -> None:
+        self.assets = dict(zip(full_data.columns, weights))
 
-p.update_prefs({'risk_appetite': 'mid'})
-print(p.assets)
-p.test_portfolio(5)
 
-p.update_prefs({'risk_appetite': 'high'})
-print(p.assets)
-p.test_portfolio(5)
